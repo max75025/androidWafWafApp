@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">wafwaf</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+
+
+    <string name="attention_channel_id">WafAttention</string>
+    <string name="attention_channel_description">info about new attack</string>
+
+    <string name="notification_content_text">новое событие в\u0020</string>
+
+    <string name="tab1_fragment_name">атаки</string>
+    <string name="tab2_fragment_name">антивирус</string>
+
+    <string name="toast_error_find_account">текущий аккаунт отсутствует или не выбран</string>
+    <string name="toast_error_add_account">ошибка добавления аккаунта</string>
+    <string name="toast_error_ethernet_conn">не получилось связаться с сервером, проверьте интернет соединение</string>
+    <string name="toast_fill_all_fields">пожалуйста, заполните все поля</string>
+    <string name="toast_wrong_api_key">не верный введенный api key</string>
+
+    <string name="add_site_dialog_positive_button">добавить</string>
+    <string name="add_site_dialog_negative_button">отмена</string>
+</resources>

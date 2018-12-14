@@ -3,8 +3,10 @@ package com.wafwaf.wafwaf;
 import android.app.DialogFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -19,6 +21,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -69,7 +72,8 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     static String accountName = null;
     static boolean allAccount = true;
 
-
+    SharedPreferences prefs = null;
+    private String[] problemOS = {"Flyme 7"};
 
     private UpdateBroadcastReceiver mUpdateBroadcastReceiver;
 
@@ -331,9 +335,10 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         registerReceiver(mUpdateBroadcastReceiver, updateIntentFilter);
 
 
+        //Log.d(TAG,Build.DISPLAY);
 
-
-
+        prefs = getSharedPreferences("com.wafwaf.wafwaf", MODE_PRIVATE);
+        attentionAboutProblem(problemOS);
         //syncApiKeysWithFCM();
 
     }
@@ -680,6 +685,30 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
             if(v != null) {
                 v.setVisibility(View.INVISIBLE);
             }
+        }
+    }
+
+    private void attentionAboutProblem(String[] problemOSVersion){
+        if (prefs.getBoolean("firstrun", true)) {
+            for(String v: problemOSVersion){
+                    if(Build.DISPLAY.contains(v)){
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                        builder.setTitle(R.string.attention)
+                                .setMessage(R.string.unstable_os_attention)
+                                .setCancelable(true)
+                                .setNegativeButton(R.string.positive_button,
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                dialog.cancel();
+                                            }
+                                        });
+
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                    }
+            }
+
+            prefs.edit().putBoolean("firstrun", false).apply();
         }
     }
 

@@ -338,8 +338,9 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         //Log.d(TAG,Build.DISPLAY);
 
         prefs = getSharedPreferences("com.wafwaf.wafwaf", MODE_PRIVATE);
-        attentionAboutProblem(problemOS);
-        addToWhiteList(problemOS);
+        //attentionAboutProblem(problemOS);
+       // addToWhiteList(problemOS);
+        allowRunningInBackgroundOnMeizu(problemOS);
         //syncApiKeysWithFCM();
 
     }
@@ -744,6 +745,35 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
         }
             }
+        }
+    }
+
+    private void allowRunningInBackgroundOnMeizu(String[] flymeOS){
+
+        if (prefs.getBoolean("firstrun", true)) {
+            for(String v: flymeOS){
+                if(Build.DISPLAY.contains(v)){
+                                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                                builder.setTitle(R.string.attention)
+                                        .setMessage(R.string.allow_for_meizu)
+                                        .setCancelable(true)
+                                        .setNegativeButton(R.string.positive_button,
+                                                new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int id) {
+                                                        Intent intent = new Intent("com.meizu.safe.security.SHOW_APPSEC");
+                                                        intent.addCategory(Intent.CATEGORY_DEFAULT);
+                                                        intent.putExtra("packageName", BuildConfig.APPLICATION_ID);
+                                                        startActivity(intent);
+                                                        dialog.cancel();
+                                                    }
+                                                });
+
+                                AlertDialog alert = builder.create();
+                                alert.show();
+                            }
+                        }
+                        prefs.edit().putBoolean("firstrun", false).apply();
+
         }
     }
 

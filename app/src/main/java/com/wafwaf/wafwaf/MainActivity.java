@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     static boolean allAccount = true;
 
     SharedPreferences prefs = null;
-    private String[] problemOS = {"Flyme 7"};
+    private String[] problemOS = {"Flyme 7" };//"OPM2.17" nexus 5x
 
     private UpdateBroadcastReceiver mUpdateBroadcastReceiver;
 
@@ -339,6 +339,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
         prefs = getSharedPreferences("com.wafwaf.wafwaf", MODE_PRIVATE);
         attentionAboutProblem(problemOS);
+        addToWhiteList(problemOS);
         //syncApiKeysWithFCM();
 
     }
@@ -709,6 +710,40 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
             }
 
             prefs.edit().putBoolean("firstrun", false).apply();
+        }
+    }
+
+    private void addToWhiteList(String[] whiteListOS){
+        for(String v:whiteListOS){
+            if (Build.DISPLAY.contains(v)){
+                //white list for android DOZE
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                   Log.d(TAG, "try to add to white list");
+                    Intent intent = new Intent();
+                    String packageName = getPackageName();
+                    android.os.PowerManager pm = (android.os.PowerManager) getSystemService(POWER_SERVICE);
+                    if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                        intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                        intent.setData(Uri.parse("package:" + packageName));
+                        startActivity(intent);
+                    }
+
+                    /*if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        builder.setTitle("важно")
+                                .setMessage("добавьте приложение в белый лист для DOZE это поможет доставлять оповещение вовремя")
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent i = new Intent();
+                                        i.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+                                        startActivity(i);
+                                    }
+                                })
+                                .show();
+                    }*/
+
+        }
+            }
         }
     }
 

@@ -97,12 +97,23 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
     @Override
     public void onDialogDeleteAccountPositiveClick(android.support.v4.app.DialogFragment dialog) {
-        db.deleteAccount(accountName);
-        db.deleteAttack(accountName);
-        db.deleteAV(accountName);
-        Intent intent = getIntent();
-        finish();
-        startActivity(intent);
+        String apiKey = db.getApiKey(accountName);
+        if (apiKey!=null) {
+            if (deleteFCMAccountOnServer(apiKey)) {
+                db.deleteAccount(accountName);
+                db.deleteAttack(accountName);
+                db.deleteAV(accountName);
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+            }else{
+                Toast massage = Toast.makeText(this,getString(R.string.toast_error_ethernet_conn), Toast.LENGTH_LONG);
+                massage.show();
+                return;
+            }
+        }else {
+            Log.e(TAG,"apiKey is null, not found on db");
+        }
     }
      @Override
     public void onFinishAddSiteDialog(String name, String apiKey) {
@@ -607,6 +618,59 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
             return false;
         }
         //return true;
+
+    }
+
+    public static boolean deleteFCMAccountOnServer(String apiKey) {
+        //Log.d(TAG, "sendApiKeyAndFCMtoken: start");
+        String stringUrl = "http://91.194.79.90:1313/deleteFCM/";
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                .permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        try{
+            // Create data variable for sent values to server
+
+            String data = "&" + URLEncoder.encode("ApiKey", "UTF-8") + "="
+                    + URLEncoder.encode(apiKey, "UTF-8");
+
+            data += "&" + URLEncoder.encode("FCMtoken", "UTF-8")
+                    + "=" + URLEncoder.encode(FCMtoken, "UTF-8");
+
+            BufferedReader reader=null;
+
+            // Send data
+
+            // Defined URL  where to send data
+            URL url = new URL(stringUrl);
+
+            // Send POST data request
+            URLConnection conn = url.openConnection();
+            conn.setDoOutput(true);
+            conn.setConnectTimeout(500);
+            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+            wr.write( data );
+            wr.flush();
+
+            // Get the server response
+            reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+            String  answer = "";
+            String line = null;
+
+            while ((line = reader.readLine()) != null){
+                answer+=line;
+            }
+            reader.close();
+
+            return answer.equals("true");
+
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            return false;
+        }
 
     }
 

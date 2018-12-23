@@ -16,6 +16,7 @@ import java.util.List;
      public boolean addAccount(String name, String apiKey);
      public boolean deleteAccount(String name);
      public List<Account> getAllAccount();
+      String getApiKey(String name);
 
     public int getLastAttackTime(String accountName);
      public boolean addAttack(String IP, String country, int startTime, int endTime,  String resultTypes, String accountName);
@@ -120,6 +121,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
                     accountList.add(account);
                 } while (cursor.moveToNext());
             }
+            cursor.close();
         }catch (Throwable e){
             e.fillInStackTrace();
             db.close();
@@ -127,6 +129,27 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
         }
         db.close();
         return accountList;
+    }
+
+
+    @Override
+    public String getApiKey(String name) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT ApiKey FROM " + TABLE_ACCOUNT + " WHERE Name=?";
+
+        try {
+            Cursor cursor = db.rawQuery(query, new String[]{name});
+            if (cursor.moveToFirst()) {
+                return cursor.getString(cursor.getColumnIndex("ApiKey"));
+            }
+            cursor.close();
+        }catch (Throwable e){
+            e.fillInStackTrace();
+            db.close();
+            return null;
+        }
+        db.close();
+        return null;
     }
 
     @Override

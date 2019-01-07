@@ -13,7 +13,6 @@
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-
         android:resizeableActivity="false"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -33,46 +32,45 @@
         <service
             android:name=".WafIntentService"
             android:exported="false">
-        </service>
 
+        </service>
 
         <!-- part for JobWork -->
 
         <service
             android:name="com.evernote.android.job.v21.PlatformJobService"
             android:exported="false"
-            android:permission="android.permission.BIND_JOB_SERVICE"/>
-
+            android:permission="android.permission.BIND_JOB_SERVICE" />
         <service
             android:name="com.evernote.android.job.v14.PlatformAlarmService"
             android:exported="false"
-            android:permission="android.permission.BIND_JOB_SERVICE"/>
-
+            android:permission="android.permission.BIND_JOB_SERVICE" />
         <service
             android:name="com.evernote.android.job.v14.PlatformAlarmServiceExact"
-            android:exported="false"/>
+            android:exported="false" />
 
         <receiver
             android:name="com.evernote.android.job.v14.PlatformAlarmReceiver"
             android:exported="false">
             <intent-filter>
+
                 <!-- Keep the filter for legacy intents -->
-                <action android:name="com.evernote.android.job.v14.RUN_JOB"/>
-                <action android:name="net.vrallev.android.job.v14.RUN_JOB"/>
+                <action android:name="com.evernote.android.job.v14.RUN_JOB" />
+                <action android:name="net.vrallev.android.job.v14.RUN_JOB" />
             </intent-filter>
         </receiver>
 
         <service
             android:name="com.evernote.android.job.JobRescheduleService"
             android:exported="false"
-            android:permission="android.permission.BIND_JOB_SERVICE"/>
-
+            android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <!-- end part for Job Work -->
 
 
         <!-- [START firebase_service] -->
-        <service android:name=".FbMessagingService"
+        <service
+            android:name=".FbMessagingService"
             android:enabled="true"
             android:exported="true"
             android:stopWithTask="false">
@@ -81,19 +79,22 @@
             </intent-filter>
         </service>
         <!-- [END firebase_service] -->
-        <!--<service
+        <!--
+        <service
             android:name=".java.MyJobService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
             </intent-filter>
-        </service>-->
+        </service>
+        -->
 
-        <!--job service part-->
+
+        <!-- job service part -->
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_notification_icon"/>
+            android:resource="@drawable/ic_notification_icon" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/attention_channel_id" />

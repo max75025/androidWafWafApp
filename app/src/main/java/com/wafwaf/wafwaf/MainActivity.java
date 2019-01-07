@@ -1,13 +1,20 @@
 package com.wafwaf.wafwaf;
 
+import android.app.Activity;
 import android.app.DialogFragment;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.AudioAttributes;
 import android.net.Uri;
 import android.os.Build;
 import android.os.StrictMode;
@@ -15,8 +22,10 @@ import android.provider.Settings;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -57,13 +66,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.wafwaf.wafwaf.util.JumpPermissionManagement.GoToSetting;
 
 
 public class MainActivity extends AppCompatActivity implements  NavigationView.OnNavigationItemSelectedListener,RVAttackAdapter.ItemClickListener, AddNewSiteDialogFragment.addSiteDialogListener, deleteAccountDialog.deleteDialogListener {
 
-    static final String testApiKey = "5a9ebd7d5f7c8cc17f385f2b36b26181a03fb3dfe78c512cb71f538869a7ea8d6b803385245dfcb698d47be097c82d4759eed12ad106021e2cfa646f905cacfc";
-    static final int   constEndTime = 2000000000;
-    static final int FIFTEEN_MINUTES = 60*15;
+
+    static final String wafSite =  "https://wafwaf.tech/statepanel";
 
     public static String PACKAGE_NAME;
     private static String TAG= "MainActivity";
@@ -73,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     static boolean allAccount = true;
 
     SharedPreferences prefs = null;
-    private String[] problemOS = {"Flyme 7" };//"OPM2.17" nexus 5x
+    //private String[] problemOS = {"Flyme 7" };//"OPM2.17" nexus 5x
 
     private UpdateBroadcastReceiver mUpdateBroadcastReceiver;
 
@@ -198,7 +207,30 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
             GoogleApiAvailability.getInstance().makeGooglePlayServicesAvailable(this);
         }
 
+        //set channel for android 8+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Uri notificationUrl = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" + R.raw.notification);
 
+            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationChannel channel = new NotificationChannel(getString(R.string.attention_channel_id),
+                    getString(R.string.attention_channel_description),
+                    NotificationManager.IMPORTANCE_HIGH);
+
+
+            AudioAttributes notificationAtt = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                    .build();
+
+            channel.setSound(notificationUrl, notificationAtt);
+            channel.enableLights(true);
+            channel.setLightColor(Color.argb(255, 75, 0, 130)); //purple color
+
+            mNotificationManager.createNotificationChannel(channel);
+
+
+
+        }
         //jobManager for check in background
         //JobManager.create(this).addJobCreator(new SyncJobCreator());
         //SyncJob.schedulePeriodic();
@@ -310,12 +342,12 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         allAccount = true;
 
 
-        Button exitButton = (Button) navigationView.findViewById(R.id.exit_button);
-        exitButton.setOnClickListener(new View.OnClickListener(){
+        Button siteButton = (Button) navigationView.findViewById(R.id.site_button);
+        siteButton.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
-                closeApp();
+                openSite(wafSite);
             }
         });
 
@@ -351,8 +383,10 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         prefs = getSharedPreferences("com.wafwaf.wafwaf", MODE_PRIVATE);
         //attentionAboutProblem(problemOS);
        // addToWhiteList(problemOS);
-        allowRunningInBackgroundOnMeizu(problemOS);
+        //allowRunningInBackgroundOnMeizu(problemOS);
         //syncApiKeysWithFCM();
+
+        getAllowInSetting(this);
 
     }
 
@@ -812,35 +846,24 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         }
     }
 
-    private void allowRunningInBackgroundOnMeizu(String[] flymeOS){
+    private void getAllowInSetting(Activity activity){
 
         if (prefs.getBoolean("firstrun", true)) {
-            for(String v: flymeOS){
-                if(Build.DISPLAY.contains(v)){
-                                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                                builder.setTitle(R.string.attention)
-                                        .setMessage(R.string.allow_for_meizu)
-                                        .setCancelable(true)
-                                        .setNegativeButton(R.string.positive_button,
-                                                new DialogInterface.OnClickListener() {
-                                                    public void onClick(DialogInterface dialog, int id) {
-                                                        Intent intent = new Intent("com.meizu.safe.security.SHOW_APPSEC");
-                                                        intent.addCategory(Intent.CATEGORY_DEFAULT);
-                                                        intent.putExtra("packageName", BuildConfig.APPLICATION_ID);
-                                                        startActivity(intent);
-                                                        dialog.cancel();
-                                                    }
-                                                });
+            /*for(String v: flymeOS){
+                if(Build.DISPLAY.contains(v)){*/
 
-                                AlertDialog alert = builder.create();
-                                alert.show();
-                            }
-                        }
+                        GoToSetting(activity);
                         prefs.edit().putBoolean("firstrun", false).apply();
 
         }
     }
 
-
+    private void openSite( String url){
+        //Intent intent = new Intent(MainActivity.this, BrowserActivity.class);
+        //startActivity(intent);
+        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+        CustomTabsIntent customTabsIntent = builder.build();
+        customTabsIntent.launchUrl(this, Uri.parse(url));
+    }
 }
 

@@ -44,4 +44,6 @@ dependencies {
 
 
     implementation 'com.google.code.gson:gson:2.8.5'
+
+    implementation 'com.android.support:customtabs:27.1.1'
 }

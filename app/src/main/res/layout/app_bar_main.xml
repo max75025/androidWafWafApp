@@ -20,11 +20,11 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat"
 
             app:layout_collapseMode="pin"
-            app:layout_scrollFlags="scroll|enterAlways"
+            app:layout_scrollFlags="enterAlways"
             app:theme="@style/ThemeOverlay.AppCompat"
             app:title="@string/app_name"
             />
-
+        <!--app:layout_scrollFlags="scroll|enterAlways"  если нужно скрывать верхнее меню-->
 
 
     </android.support.design.widget.AppBarLayout>

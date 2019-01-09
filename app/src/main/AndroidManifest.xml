@@ -31,9 +31,7 @@
 
         <service
             android:name=".WafIntentService"
-            android:exported="false">
-
-        </service>
+            android:exported="false"></service>
 
         <!-- part for JobWork -->
 
@@ -99,6 +97,7 @@
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/attention_channel_id" />
 
+        <activity android:name=".WebViewActivity"></activity>
     </application>
 
 </manifest>

@@ -2,10 +2,8 @@ package com.wafwaf.wafwaf;
 
 import android.app.Activity;
 import android.app.DialogFragment;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -25,7 +23,6 @@ import android.support.annotation.NonNull;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -35,27 +32,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.evernote.android.job.JobManager;
-import com.firebase.jobdispatcher.Constraint;
-import com.firebase.jobdispatcher.FirebaseJobDispatcher;
-import com.firebase.jobdispatcher.GooglePlayDriver;
-import com.firebase.jobdispatcher.Job;
-import com.firebase.jobdispatcher.Lifetime;
-import com.firebase.jobdispatcher.RetryStrategy;
-import com.firebase.jobdispatcher.Trigger;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.gson.Gson;
+import com.wafwaf.wafwaf.util.CustomTabsHelper;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -80,6 +71,9 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     public static String FCMtoken = null;
     static String accountName = null;
     static boolean allAccount = true;
+
+
+    Menu menu;
 
     SharedPreferences prefs = null;
     //private String[] problemOS = {"Flyme 7" };//"OPM2.17" nexus 5x
@@ -231,6 +225,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
 
         }
+        //region old code
         //jobManager for check in background
         //JobManager.create(this).addJobCreator(new SyncJobCreator());
         //SyncJob.schedulePeriodic();
@@ -263,7 +258,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
             }*//*
 
         }*/
-
+        //endregion
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -337,9 +332,12 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
             }
             //accountName = accountList.get(0).name;
         }
+
+
         menu.findItem(R.id.nav_all_site).setCheckable(true);
         menu.findItem(R.id.nav_all_site).setChecked(true);
         allAccount = true;
+
 
 
         Button siteButton = (Button) navigationView.findViewById(R.id.site_button);
@@ -360,6 +358,8 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
 
         navigationView.setNavigationItemSelectedListener(this);
+
+
 
 
         /*if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
@@ -390,7 +390,11 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
     }
 
-
+    public void showOptionMenu(boolean showMenu){
+        if(menu == null)
+            return;
+        menu.setGroupVisible(R.id.option_menu_group, showMenu);
+    }
 
     @Override
     public void onBackPressed() {
@@ -411,8 +415,11 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        this.menu = menu;
+        showOptionMenu(false);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -479,7 +486,11 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
             accountName = null;
             allAccount = true;
 
+            //скрываю кнопки в общем меню
+            //findViewById(R.id.action_delete).setVisibility(View.INVISIBLE);
+            //findViewById(R.id.action_protection_settings).setVisibility(View.INVISIBLE);
 
+            showOptionMenu(false);
             List<Attack> attacks = new ArrayList<>();
             List<AV> avs = new ArrayList<>();
             attacks = db.getAllAttackByTime(getUnixTimeDaysAgo(1));
@@ -488,11 +499,17 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
             sentDataToRVAttackAdapter.setData(attacks);
             sentDataToRVAVAdapter.setData(avs);
 
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            Menu menu = navigationView.getMenu();
+            onPrepareOptionsMenu(menu);
+
 
         }
 
 
         if (id==1){
+
+            showOptionMenu(true);
             /*Toast toast = Toast.makeText(getApplicationContext(),
                     item.getTitle(), Toast.LENGTH_SHORT);
             toast.show();*/
@@ -847,10 +864,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     }
 
     private void getAllowInSetting(Activity activity){
-
         if (prefs.getBoolean("firstrun", true)) {
-            /*for(String v: flymeOS){
-                if(Build.DISPLAY.contains(v)){*/
 
                         GoToSetting(activity);
                         prefs.edit().putBoolean("firstrun", false).apply();
@@ -859,11 +873,18 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     }
 
     private void openSite( String url){
-        //Intent intent = new Intent(MainActivity.this, BrowserActivity.class);
-        //startActivity(intent);
-        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-        CustomTabsIntent customTabsIntent = builder.build();
-        customTabsIntent.launchUrl(this, Uri.parse(url));
+       String browser = CustomTabsHelper.getPackageNameToUse(this);
+
+       if (browser==null){
+           Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
+           intent.putExtra("url", url);
+           startActivity(intent);
+       }else{
+           CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+           CustomTabsIntent customTabsIntent = builder.build();
+           customTabsIntent.launchUrl(this, Uri.parse(url));
+       }
+
     }
 }
 

@@ -120,10 +120,13 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="6f6f6f" />
-                            <entry key="outputName" value="ic_dashboard_black_24dp" />
+                            <entry key="height" value="96" />
+                            <entry key="outputName" value="ic_icons8_maintenance_filled_96" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="C:\Users\макс" />
+                            <entry key="sourceFile" value="C:\Users\макс\Desktop\icons8-maintenance-filled-96.svg" />
+                            <entry key="width" value="96" />
                           </map>
                         </option>
                       </PersistentState>

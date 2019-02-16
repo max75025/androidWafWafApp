@@ -14,7 +14,7 @@ public class Attack {
     /*String type2;*/
     int imgId;
     String account;
-
+    String apiKey;
     Attack(){
     }
 
@@ -51,7 +51,7 @@ public class Attack {
 
     }
 
-    Attack(String country, String ip, String startAttackTime, String endAttackTime, String types, String account) {
+    Attack(String country, String ip, String startAttackTime, String endAttackTime, String types, String account, String apiKey) {
         this.country = country;
         this.ip = ip;
         this.startAttackTime = startAttackTime;
@@ -60,16 +60,72 @@ public class Attack {
         /*this.type2 = type2;*/
         setImgId(types);
         this.account = account;
+        this.apiKey = apiKey;
 
     }
 
-   /* private List<Card> cards;
+    public String getCountry() {
+        return country;
+    }
 
-    private void initializeData() {
-        cards = new ArrayList<>();
-        cards.add(new Card("header1", "content1"));
-        cards.add(new Card("header2", "content2"));
-        cards.add(new Card("header3", "content3"));
+    public void setCountry(String country) {
+        this.country = country;
+    }
 
-    }*/
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public String getStartAttackTime() {
+        return startAttackTime;
+    }
+
+    public void setStartAttackTime(String startAttackTime) {
+        this.startAttackTime = startAttackTime;
+    }
+
+    public String getEndAttackTime() {
+        return endAttackTime;
+    }
+
+    public void setEndAttackTime(String endAttackTime) {
+        this.endAttackTime = endAttackTime;
+    }
+
+    public String getTypes() {
+        return types;
+    }
+
+    public void setTypes(String types) {
+        this.types = types;
+    }
+
+    public int getImgId() {
+        return imgId;
+    }
+
+    public void setImgId(int imgId) {
+        this.imgId = imgId;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
+    }
+
 }

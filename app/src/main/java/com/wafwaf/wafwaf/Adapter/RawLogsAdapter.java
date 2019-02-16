@@ -1,0 +1,114 @@
+package com.wafwaf.wafwaf.Adapter;
+
+import android.animation.ObjectAnimator;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+
+import com.wafwaf.wafwaf.AttackRawLogs;
+import com.wafwaf.wafwaf.R;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+public class RawLogsAdapter extends RecyclerView.Adapter<RawLogsAdapter.RawLogsViewHolder> {
+    public class RawLogsViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView time;
+        private TextView attackDirection;
+        private TextView attackPackage;
+
+
+
+        public RawLogsViewHolder(View itemView) {
+            super(itemView);
+            time = itemView.findViewById(R.id.attack_time);
+            attackDirection = itemView.findViewById(R.id.attack_direction);
+            attackPackage = itemView.findViewById(R.id.attack_package);
+
+
+            attackPackage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //holder.title.setMaxLines(100);
+                    cycleTextViewExpansion(attackPackage);
+                }
+            });
+        }
+
+        private void cycleTextViewExpansion(TextView tv){
+            int collapsedMaxLines = 4;
+            ObjectAnimator animation = ObjectAnimator.ofInt(tv, "maxLines",
+                    tv.getMaxLines() == collapsedMaxLines? tv.getLineCount() : collapsedMaxLines);
+            animation.setDuration(200).start();
+        }
+
+
+
+        public void bind(AttackRawLogs rawLogs) {
+            String DateFormatted = getFormattedDate(rawLogs.getAttackTime());
+            time.setText(DateFormatted);
+            attackDirection.setText(rawLogs.getAttackDirection());
+           attackPackage.setText(rawLogs.getAttackPackage());
+
+
+        }
+
+
+
+        private String getFormattedDate(String rawDate) {
+             SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            try {
+
+                return  dateFormat.format(new Date(Long.parseLong(rawDate) * 1000));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+
+    private List<AttackRawLogs> rawLogsList = new ArrayList<>();
+    private static final String TWITTER_RESPONSE_FORMAT="EEE MMM dd HH:mm:ss ZZZZZ yyyy"; // Thu Oct 26 07:31:08 +0000 2017
+    private static final String MONTH_DAY_FORMAT = "MMM d"; // Oct 26
+    public void setItems(Collection<AttackRawLogs> tweets) {
+        rawLogsList.addAll(tweets);
+        notifyDataSetChanged();
+    }
+
+    public void clearItems() {
+        rawLogsList.clear();
+        notifyDataSetChanged();
+    }
+
+
+    @NonNull
+    @Override
+    public RawLogsAdapter.RawLogsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.cardview_raw_logs, parent, false);
+        return new RawLogsViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RawLogsAdapter.RawLogsViewHolder holder, int position) {
+        holder.bind(rawLogsList.get(position));
+    }
+
+    @Override
+    public int getItemCount() {
+        return rawLogsList.size();
+    }
+
+
+
+}

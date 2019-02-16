@@ -133,12 +133,12 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
 
 
     @Override
-    public String getApiKey(String name) {
+    public String getApiKey(String nameAccount) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT ApiKey FROM " + TABLE_ACCOUNT + " WHERE Name=?";
 
         try {
-            Cursor cursor = db.rawQuery(query, new String[]{name});
+            Cursor cursor = db.rawQuery(query, new String[]{nameAccount});
             if (cursor.moveToFirst()) {
                 return cursor.getString(cursor.getColumnIndex("ApiKey"));
             }
@@ -212,6 +212,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
                     attack.types = cursor.getString(4);
                     attack.setImgId(cursor.getString(4));
                     attack.account = cursor.getString(5);
+                    attack.apiKey = getApiKey(attack.account);
                     attackList.add(attack);
                 } while (cursor.moveToNext());
             }
@@ -244,6 +245,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
                     attack.types = cursor.getString(4);
                     attack.setImgId(cursor.getString(4));
                     attack.account = cursor.getString(5);
+                    attack.apiKey = getApiKey(attack.account);
                     attackList.add(attack);
                 } while (cursor.moveToNext());
             }

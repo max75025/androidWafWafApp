@@ -34,4 +34,39 @@ public class AV {
         this.account = account;
 
     }
+
+    public String getEventTime(){
+        return eventTime;
+    }
+    public String getEventType(){
+        return eventType;
+    }public String getFileName(){
+        return fileName;
+    }public String getDescription(){
+        return description;
+    }public int getImgId(){
+        return imgId;
+    }public String getAccount(){
+        return account;
+    }
+
+
+    public void setEventTime(String eventTime){
+       this.eventTime = eventTime;
+    }
+    public void setEventType(String eventType){
+        this.eventType = eventType;
+    }
+    public void setFileName(String fileName){
+        this.fileName = fileName;
+    }
+    public void setDescription(String description){
+        this.description = description;
+    }
+    public void setImgId(int imgId){
+       this.imgId = imgId;
+    }
+    public void setAccount(String account){
+        this.account = account;
+    }
 }

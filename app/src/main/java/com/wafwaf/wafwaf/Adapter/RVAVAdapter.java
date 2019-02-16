@@ -1,4 +1,4 @@
-package com.wafwaf.wafwaf;
+package com.wafwaf.wafwaf.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.wafwaf.wafwaf.AV;
+import com.wafwaf.wafwaf.R;
 
 import java.util.List;
 
@@ -36,7 +39,7 @@ public class RVAVAdapter extends RecyclerView.Adapter<RVAVAdapter.CardViewHolder
     private RVAVAdapter.ItemClickListener mClickListener;
 
     // data is passed into the constructor
-    RVAVAdapter(Context context, List<AV> data) {
+    public RVAVAdapter(Context context, List<AV> data) {
 
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
@@ -53,11 +56,11 @@ public class RVAVAdapter extends RecyclerView.Adapter<RVAVAdapter.CardViewHolder
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(RVAVAdapter.CardViewHolder holder, int position) {
-        holder.file.setText(mData.get(position).fileName);
-        holder.timeAndType.setText(mData.get(position).eventType +" ("+mData.get(position).eventTime+")");
-        holder.description.setText(mData.get(position).description);
-        holder.imgId.setImageResource(mData.get(position).imgId);
-        holder.account.setText(mData.get(position).account);
+        holder.file.setText(mData.get(position).getFileName());
+        holder.timeAndType.setText(mData.get(position).getEventType() +" ("+mData.get(position).getEventTime()+")");
+        holder.description.setText(mData.get(position).getDescription());
+        holder.imgId.setImageResource(mData.get(position).getImgId());
+        holder.account.setText(mData.get(position).getAccount());
 
     }
 

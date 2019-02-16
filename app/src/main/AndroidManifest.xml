@@ -31,7 +31,7 @@
 
         <service
             android:name=".WafIntentService"
-            android:exported="false"></service>
+            android:exported="false" />
 
         <!-- part for JobWork -->
 
@@ -76,6 +76,15 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+        <service
+            android:name=".FbJobService"
+            android:enabled="true"
+            android:exported="true"
+            android:stopWithTask="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
         <!-- [END firebase_service] -->
         <!--
         <service
@@ -97,7 +106,10 @@
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/attention_channel_id" />
 
-        <activity android:name=".WebViewActivity"></activity>
+        <activity android:name=".WebViewActivity" />
+        <activity android:name=".RawLogsActivity">
+
+        </activity>
     </application>
 
 </manifest>

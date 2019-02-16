@@ -32,4 +32,28 @@
     <string name="allow_for_meizu">Для стабильной работы приложения перейдите в "<b>Работа в фоне</b>" и установите значение "<b>Разрешить работу в фоне</b>" в противном случае вы не будете получать уведомления. </string>
     <string name="site">сайт</string>
     <string name="for_nexus_5x_owners">А ты рисковый. Телефончик то в любой момент может поймать отвал чипа. Но ничего, я с тобой. Если что - делай ребол.</string>
+
+    <string name="protection_none">none</string>
+    <string name="protection_none_description">\u0020(some description of this protection to test, big description, but still normal view)\u0020</string>
+    <string name="protection_standard">standard</string>
+    <string name="protection_standard_description">\u0020(some description of this protection to test, big description, but still normal view)\u0020</string>
+    <string name="protection_strong">strong</string>
+    <string name="protection_strong_description">\u0020(some description of this protection to test, big description, but still normal view)\u0020</string>
+    <string name="protection_extreme">extreme</string>
+    <string name="protection_extreme_description">\u0020(some description of this protection to test, big description, but still normal view)\u0020</string>
+
+    <string name="rawLogs">raw logs</string>
+    <string name="share">share</string>
+    <string name="ip_info">ip info</string>
+
+    <string name="add_site">добавить сайт</string>
+    <string name="recent">недавние</string>
+
+
+    <string name="ip_info_header">Информация по Ip адресу за весь период</string>
+    <string name="vectors">векторы:\u0020</string>
+    <string name="first_attack">первая атака:\u0020</string>
+    <string name="last_attack">последняя атака:\u0020</string>
+    <string name="countries">страны:</string>
+    <string name="attack_count">количество атак:\u0020</string>
 </resources>

@@ -2,20 +2,17 @@ package com.wafwaf.wafwaf.Manager;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.StrictMode;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
-
+import android.widget.Toast;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.wafwaf.wafwaf.R;
-import com.wafwaf.wafwaf.WafLibraryPackege.Antivirus;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -23,58 +20,16 @@ import java.util.List;
 public class IpInfoManager {
 
 
-    private static final String TAG = "IpInfoManager" ;
-
-    String GetJson(String apiKey, String ip) {
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-                .permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-
-        String json = null;
-
-        //https://wafwaf.tech/logsbyipjson/apiKey/ip
-        //https://wafwaf.tech/logsbyipjson/170ecd95a094a7c03a5a7bc20a173afd17c0e015db18ccbbc05395f271d979f459e1120fcab10e6cc290a1b77a9aae7236e3277dcd0393a40c0aa0398696ed8c/94.158.152.76
-        try {
-            URL url = new URL("http://wafwaf.tech/logsbyipjson/" + apiKey + "/" + ip);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.setUseCaches(false);
-
-
-            int code = connection.getResponseCode();
-            Log.d(TAG, "GetJson code: "+code);
-            if (code == HttpURLConnection.HTTP_OK) {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf8"));
-                String answer = "";
-                String line = null;
-
-                while ((line = reader.readLine()) != null) {
-                    answer += line;
-                    Log.d(TAG, "GetJson line: " +line);
-                }
-                json = answer;
-                reader.close();
-            }
-            connection.disconnect();
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Exception occurred");
-        }
-        return json;
-    }
+    private static final String TAG = "IpInfoManager";
 
 
     //{"TimeFirst":"12-10-2018 : 21:50:24","TimeLast":"10-02-2019 : 05:46:49","Countries":["Ukraine"],"TotalAttacks":193,"TotalResults":{"clientside":13,"database":175,"serverside":5}}
-    private IpInfo getIpInfo(String apiKey, String ip) {
+
+
+    private IpInfo jsonConvert(String json){
         IpInfo info = new IpInfo();
-        String json = GetJson(apiKey, ip);
-        //Log.d(TAG, "getIpInfo: " + json);
-       // Log.d(TAG, "getIpInfo apiKey: " + apiKey);
-       // Log.d(TAG, "getIpInfo ip: " + ip);
-        if (json == null || json.equals("null")) {
-            //return info;
+        if (json == null || json.equals("none")) {
+            return null;
         }
         try {
             JSONObject jsonObject = new JSONObject(json);
@@ -84,8 +39,8 @@ public class IpInfoManager {
             info.timeLast = jsonObject.getString("TimeLast");
             info.countries = "";
             JSONArray jsonCountries = jsonObject.getJSONArray("Countries");
-            for(int i=0; i<jsonCountries.length();i++){
-                info.countries+= jsonCountries.getString(i) +"; ";
+            for (int i = 0; i < jsonCountries.length(); i++) {
+                info.countries += jsonCountries.getString(i) + "; ";
             }
 
             info.vectors = "";
@@ -93,9 +48,9 @@ public class IpInfoManager {
             JSONObject jsonVectors = jsonObject.getJSONObject("TotalResults");
             Iterator keysToCopyIterator = jsonVectors.keys();
             List<String> keysList = new ArrayList<String>();
-            while(keysToCopyIterator.hasNext()) {
+            while (keysToCopyIterator.hasNext()) {
                 String key = (String) keysToCopyIterator.next();
-                info.vectors+= key +"[" + jsonVectors.getString(key) +"]; ";
+                info.vectors += key + "[" + jsonVectors.getString(key) + "]; ";
                 //keysList.add(key);
             }
 
@@ -108,8 +63,8 @@ public class IpInfoManager {
         return info;
     }
 
-    public void showIpInfoAlert(final Context context, String apiKey, String ip ) {
-        IpInfo info = getIpInfo(apiKey, ip);
+
+    private void showIpInfoAlert(final Context context, IpInfo info) {
 
         String message = context.getString(R.string.attack_count) + info.count + "\n" +
                 context.getString(R.string.first_attack) + info.timeFirst + "\n" +
@@ -132,7 +87,42 @@ public class IpInfoManager {
         AlertDialog alert = builder.create();
         alert.show();
     }
+
+
+    /**
+    * manage and show info about ip address
+    */
+    public void run(final Context context, String apiKey, String ip) {
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = "https://wafwaf.tech/logsbyipjson/" + apiKey + "/" + ip ;
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                       IpInfo info = jsonConvert(response);
+                       if (info!=null) {
+                           showIpInfoAlert(context, info);
+                       }else{
+                           Toast.makeText(context, context.getString(R.string.toast_oops), Toast.LENGTH_LONG).show();
+                       }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // mTextView.setText("That didn't work!");
+                Toast.makeText(context, context.getString(R.string.toast_error_ethernet_conn), Toast.LENGTH_LONG).show();
+                //massage.show();
+            }
+        });
+
+// Add the request to the RequestQueue.
+        queue.add(stringRequest);
+    }
 }
+
 
 class IpInfo {
     String count;

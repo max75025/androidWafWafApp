@@ -1,6 +1,8 @@
 package com.wafwaf.wafwaf;
 
-public class AttackRawLogs {
+import java.io.Serializable;
+
+public class AttackRawLogs implements Serializable {
     private String attackTime;
     private String attackDirection;
     private String attackPackage;
@@ -29,5 +31,8 @@ public class AttackRawLogs {
         this.attackTime = time;
         this.attackDirection = attackDirection;
         this.attackPackage = attackPackage;
+    }
+    public AttackRawLogs(){
+
     }
 }

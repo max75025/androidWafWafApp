@@ -16,9 +16,11 @@ import android.widget.Toast;
 import com.wafwaf.wafwaf.Attack;
 import com.wafwaf.wafwaf.DatabaseHandler;
 import com.wafwaf.wafwaf.MainActivity;
+import com.wafwaf.wafwaf.Manager.AttackRawLogsManager;
 import com.wafwaf.wafwaf.Manager.IpInfoManager;
 import com.wafwaf.wafwaf.R;
 import com.wafwaf.wafwaf.RawLogsActivity;
+import com.wafwaf.wafwaf.util.UnixTime;
 
 import java.util.List;
 
@@ -107,12 +109,17 @@ public class RVAttackAdapter extends RecyclerView.Adapter<RVAttackAdapter.CardVi
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.menu_raw_logs:
-                                Intent intent = new Intent(mContext, RawLogsActivity.class);
-                                mContext.startActivity(intent);
+                                //Intent intent = new Intent(mContext, RawLogsActivity.class);
+                                //mContext.startActivity(intent);
+                                new AttackRawLogsManager().run(mContext,
+                                                               mData.get(holder.getAdapterPosition()).getApiKey() ,
+                                                               mData.get(holder.getAdapterPosition()).getIp(),
+                                                               UnixTime.toUnix(mData.get(holder.getAdapterPosition()).getStartAttackTime()),
+                                                               UnixTime.toUnix(mData.get(holder.getAdapterPosition()).getEndAttackTime()) );
                                 return true;
                             case R.id.menu_ip_info:
-                                new IpInfoManager().showIpInfoAlert(mContext, mData.get(holder.getAdapterPosition()).getApiKey()  , mData.get(holder.getAdapterPosition()).getIp());
-
+                               // new IpInfoManager().showIpInfoAlert(mContext, mData.get(holder.getAdapterPosition()).getApiKey()  , mData.get(holder.getAdapterPosition()).getIp());
+                                    new IpInfoManager().run(mContext,mData.get(holder.getAdapterPosition()).getApiKey()  , mData.get(holder.getAdapterPosition()).getIp());
                                 return true;
                             case R.id.menu_share:
                                 Toast.makeText(mContext, "you clicked" + mData.get(holder.getAdapterPosition()).getIp() , Toast.LENGTH_SHORT).show();

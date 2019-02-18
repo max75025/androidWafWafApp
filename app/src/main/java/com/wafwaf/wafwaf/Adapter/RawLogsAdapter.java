@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.wafwaf.wafwaf.AttackRawLogs;
 import com.wafwaf.wafwaf.R;
+import com.wafwaf.wafwaf.util.UnixTime;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -55,7 +56,7 @@ public class RawLogsAdapter extends RecyclerView.Adapter<RawLogsAdapter.RawLogsV
 
 
         public void bind(AttackRawLogs rawLogs) {
-            String DateFormatted = getFormattedDate(rawLogs.getAttackTime());
+            String DateFormatted = rawLogs.getAttackTime();
             time.setText(DateFormatted);
             attackDirection.setText(rawLogs.getAttackDirection());
            attackPackage.setText(rawLogs.getAttackPackage());
@@ -64,24 +65,14 @@ public class RawLogsAdapter extends RecyclerView.Adapter<RawLogsAdapter.RawLogsV
         }
 
 
-
-        private String getFormattedDate(String rawDate) {
-             SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-            try {
-
-                return  dateFormat.format(new Date(Long.parseLong(rawDate) * 1000));
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
     }
 
 
     private List<AttackRawLogs> rawLogsList = new ArrayList<>();
-    private static final String TWITTER_RESPONSE_FORMAT="EEE MMM dd HH:mm:ss ZZZZZ yyyy"; // Thu Oct 26 07:31:08 +0000 2017
-    private static final String MONTH_DAY_FORMAT = "MMM d"; // Oct 26
-    public void setItems(Collection<AttackRawLogs> tweets) {
-        rawLogsList.addAll(tweets);
+   // private static final String TWITTER_RESPONSE_FORMAT="EEE MMM dd HH:mm:ss ZZZZZ yyyy"; // Thu Oct 26 07:31:08 +0000 2017
+    //private static final String MONTH_DAY_FORMAT = "MMM d"; // Oct 26
+    public void setItems(Collection<AttackRawLogs> logs) {
+        rawLogsList.addAll(logs);
         notifyDataSetChanged();
     }
 

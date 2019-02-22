@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.wafwaf.wafwaf.Adapter.RVAVAdapter;
+import com.wafwaf.wafwaf.Model.AV;
+import com.wafwaf.wafwaf.Model.Account;
 
 import java.util.ArrayList;
 import java.util.List;

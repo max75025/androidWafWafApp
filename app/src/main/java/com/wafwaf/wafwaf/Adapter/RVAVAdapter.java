@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.wafwaf.wafwaf.AV;
+import com.wafwaf.wafwaf.Model.AV;
 import com.wafwaf.wafwaf.R;
 
 import java.util.List;

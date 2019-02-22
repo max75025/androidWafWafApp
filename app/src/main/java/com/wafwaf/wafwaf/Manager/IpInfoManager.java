@@ -95,7 +95,7 @@ public class IpInfoManager {
     public void run(final Context context, String apiKey, String ip) {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "https://wafwaf.tech/logsbyipjson/" + apiKey + "/" + ip ;
+        String url = "https://2waf.com/logsbyipjson/" + apiKey + "/" + ip ;
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,

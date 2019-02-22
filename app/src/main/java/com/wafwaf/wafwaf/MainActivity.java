@@ -45,6 +45,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.wafwaf.wafwaf.Adapter.RVAttackAdapter;
+import com.wafwaf.wafwaf.Manager.ProtectionSettingManager;
+import com.wafwaf.wafwaf.Model.AV;
+import com.wafwaf.wafwaf.Model.Account;
+import com.wafwaf.wafwaf.Model.Attack;
 import com.wafwaf.wafwaf.util.CustomTabsHelper;
 
 import java.io.BufferedReader;
@@ -74,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     static String accountName = null;
     static boolean allAccount = true;
 
+    private Context mContext;
 
     Menu menu;
 
@@ -204,8 +209,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         getFCMToken();
         PACKAGE_NAME = getApplicationContext().getPackageName();
-        System.out.println(PACKAGE_NAME);
-
+        //System.out.println(PACKAGE_NAME);
+        mContext = this;
         int resultCode = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this);
         if (resultCode != ConnectionResult.SUCCESS) {
             GoogleApiAvailability.getInstance().makeGooglePlayServicesAvailable(this);
@@ -333,7 +338,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (accountList.size() > 0) {
 
             for (Account account : accountList) {
-                menu.add(R.id.site_list, 1, 0, account.name);
+                menu.add(R.id.site_list, 1, 0, account.getName());
             }
             //accountName = accountList.get(0).name;
         }
@@ -434,21 +439,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        /*if (id == R.id.action_refresh) {
-         *//*Toast toast = Toast.makeText(getApplicationContext(),
-                    "refresh", Toast.LENGTH_SHORT);
-            toast.show();*//*
-            if(accountName!=null){
-               List<Attack> attacks = db.getAllAttack(accountName);
-               List<AV> avs = db.getAllAV(accountName);
-
-                sentDataToRVAttackAdapter.setData(attacks);
-                sentDataToRVAVAdapter.setData(avs);
-            }
-
-            //return true;
-        }*/
         switch (item.getItemId()) {
             case R.id.action_delete:
                 if (accountName != null) {
@@ -461,7 +451,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
             case R.id.action_protection_settings:
-                showProtectionSettingMenu();
+                new ProtectionSettingManager(mContext).run(new DatabaseHandler(mContext).getApiKey(accountName));
                 //showRawLogs();
                 break;
             case R.id.action_chat:
@@ -476,7 +466,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
-    private void showProtectionSettingMenu() {
+    /*private void showProtectionSettingMenu() {
         // Strings to Show In Dialog with Radio Buttons
         String none = getResources().getString(R.string.protection_none) + getResources().getString(R.string.protection_none_description);
         String standard = getResources().getString(R.string.protection_standard) + getResources().getString(R.string.protection_standard_description);
@@ -511,7 +501,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
         AlertDialog levelDialog = builder.create();
         levelDialog.show();
-    }
+    }*/
 
     private void showRawLogs() {
         Intent intent = new Intent(MainActivity.this, RawLogsActivity.class);

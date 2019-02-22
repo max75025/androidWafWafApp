@@ -1,15 +1,17 @@
-package com.wafwaf.wafwaf;
+package com.wafwaf.wafwaf.Model;
+
+import com.wafwaf.wafwaf.util.UnixTime;
 
 import java.io.Serializable;
 
 public class AttackRawLogs implements Serializable {
-    private String attackTime;
+    private long attackTime;
     private String attackDirection;
     private String attackPackage;
 
-    public String getAttackTime(){
-        return attackTime;
-    }
+    public String getAttackTime(){ return UnixTime.toDate(attackTime); }
+    public long getAttackTimeUnix(){return attackTime;}
+
     public String getAttackDirection(){
         return attackDirection;
     }
@@ -17,7 +19,7 @@ public class AttackRawLogs implements Serializable {
         return attackPackage;
     }
 
-    public void setAttackTime(String time){
+    public void setAttackTime(long time){
         this.attackTime = time;
     }
     public void setAttackDirection(String attackDirection){
@@ -27,7 +29,7 @@ public class AttackRawLogs implements Serializable {
         this.attackPackage = attackPackage;
     }
 
-    public AttackRawLogs(String time, String attackDirection, String attackPackage){
+    public AttackRawLogs(long time, String attackDirection, String attackPackage){
         this.attackTime = time;
         this.attackDirection = attackDirection;
         this.attackPackage = attackPackage;

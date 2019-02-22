@@ -9,17 +9,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
-import com.wafwaf.wafwaf.AttackRawLogs;
+import com.wafwaf.wafwaf.Model.AttackRawLogs;
 import com.wafwaf.wafwaf.R;
-import com.wafwaf.wafwaf.util.UnixTime;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class RawLogsAdapter extends RecyclerView.Adapter<RawLogsAdapter.RawLogsViewHolder> {
     public class RawLogsViewHolder extends RecyclerView.ViewHolder {

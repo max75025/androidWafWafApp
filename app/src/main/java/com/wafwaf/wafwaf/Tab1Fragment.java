@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.wafwaf.wafwaf.Adapter.RVAttackAdapter;
+import com.wafwaf.wafwaf.Model.Attack;
 
 import java.util.ArrayList;
 import java.util.List;

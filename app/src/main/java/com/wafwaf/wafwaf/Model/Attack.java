@@ -1,25 +1,28 @@
-package com.wafwaf.wafwaf;
+package com.wafwaf.wafwaf.Model;
 
 import android.media.Image;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.wafwaf.wafwaf.R;
+import com.wafwaf.wafwaf.util.UnixTime;
 
 public class Attack {
-    String country;
-    String ip;
-    String startAttackTime;
-    String endAttackTime;
-    String types;
+    private String country;
+    private String ip;
+    private long startAttackTime;
+    private long endAttackTime;
+    private String types;
     /*String type2;*/
-    int imgId;
-    String account;
-    String apiKey;
-    Attack(){
+    private int imgId;
+    private String account;
+    private String apiKey;
+
+
+
+    public Attack(){
     }
 
 
-    void setImgId(String types){
+    public void setImgId(String types){
         if (types.indexOf(';')!=types.lastIndexOf(';')){
             this.imgId = R.drawable.mixed_attack;
             return;
@@ -51,7 +54,7 @@ public class Attack {
 
     }
 
-    Attack(String country, String ip, String startAttackTime, String endAttackTime, String types, String account, String apiKey) {
+    public Attack(String country, String ip, int startAttackTime, int endAttackTime, String types, String account, String apiKey) {
         this.country = country;
         this.ip = ip;
         this.startAttackTime = startAttackTime;
@@ -81,18 +84,26 @@ public class Attack {
     }
 
     public String getStartAttackTime() {
-        return startAttackTime;
+        return UnixTime.toDate(startAttackTime);
     }
 
-    public void setStartAttackTime(String startAttackTime) {
+    public long getStartAttackTimeUnix(){return startAttackTime;}
+
+    public void setStartAttackTime(long startAttackTime) {
         this.startAttackTime = startAttackTime;
     }
 
+
     public String getEndAttackTime() {
+        return UnixTime.toDate(endAttackTime);
+    }
+
+    public long getEndAttackTimeUnix() {
         return endAttackTime;
     }
 
-    public void setEndAttackTime(String endAttackTime) {
+
+    public void setEndAttackTime(long endAttackTime) {
         this.endAttackTime = endAttackTime;
     }
 

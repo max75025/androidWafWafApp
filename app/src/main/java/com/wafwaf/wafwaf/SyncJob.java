@@ -1,32 +1,12 @@
 package com.wafwaf.wafwaf;
 
-import android.annotation.SuppressLint;
-import android.app.IntentService;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.media.AudioAttributes;
 import android.net.Uri;
-import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 
 import com.evernote.android.job.Job;
-import com.evernote.android.job.JobManager;
 import com.evernote.android.job.JobRequest;
-import com.wafwaf.wafwaf.WafLibraryPackege.Antivirus;
-import com.wafwaf.wafwaf.WafLibraryPackege.WafLibrary;
-import com.wafwaf.wafwaf.WafLibraryPackege.sortEvent;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 

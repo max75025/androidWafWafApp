@@ -1,6 +1,6 @@
 package com.wafwaf.wafwaf.WafLibraryPackege;
 
-public class   Antivirus{
+public class Antivirus {
     public String  ApiKey;
     public int     EventTime;
     public String  EventType;
@@ -10,5 +10,5 @@ public class   Antivirus{
     public String  SuspiciousType;
     public String  SuspiciousDescription;
 
-   public  Antivirus(){}
+   public Antivirus(){}
 }

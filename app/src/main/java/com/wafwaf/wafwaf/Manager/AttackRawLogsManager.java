@@ -2,8 +2,6 @@ package com.wafwaf.wafwaf.Manager;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -13,22 +11,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-import com.wafwaf.wafwaf.AttackRawLogs;
 import com.wafwaf.wafwaf.R;
 import com.wafwaf.wafwaf.RawLogsActivity;
-import com.wafwaf.wafwaf.util.UnixTime;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
 
 public class AttackRawLogsManager {
 
@@ -38,7 +23,7 @@ public class AttackRawLogsManager {
 
 
 
-    //https://wafwaf.tech/eventsjson/apiKey/ip/start/end
+
 
     public void run(final Context context, String apiKey, String ip, String startTime, String endTime) {
         if (startTime == null || endTime==null){
@@ -46,7 +31,7 @@ public class AttackRawLogsManager {
             return;
         }
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "https://wafwaf.tech/eventsjson/" + apiKey + "/" + ip + "/" + startTime + "/" + endTime;
+        String url = "https://2waf.com/eventsjson/" + apiKey + "/" + ip + "/" + startTime + "/" + endTime;
         Log.d(TAG, "run: url - " + url);
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,

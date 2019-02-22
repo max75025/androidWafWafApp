@@ -6,10 +6,18 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.text.SimpleDateFormat;
+import com.wafwaf.wafwaf.Model.AV;
+import com.wafwaf.wafwaf.Model.Account;
+import com.wafwaf.wafwaf.Model.Attack;
+
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
+
+
+
+
 
  interface IDatabaseHandler {
 
@@ -19,14 +27,14 @@ import java.util.List;
       String getApiKey(String name);
 
     public int getLastAttackTime(String accountName);
-     public boolean addAttack(String IP, String country, int startTime, int endTime,  String resultTypes, String accountName);
-    public List<Attack> getAllAttackByTime(int startTime);
+     public boolean addAttack(String IP, String country, long startTime, long endTime,  String resultTypes, String accountName);
+    public List<Attack> getAllAttackByTime(long startTime);
     public List<Attack> getAllAccountAttack(String accountName);
     public boolean deleteAttack( String accountName);
 
     public int getLastAVTime(String accountName);
-    public boolean addAV(int eventTime, String eventType, String fileName, String fileExt, String filePath, String suspicionType, String suspicionDescription, String AccountName);
-    public List<AV> getAllAVByTime(int startTime);
+    public boolean addAV(long eventTime, String eventType, String fileName, String fileExt, String filePath, String suspicionType, String suspicionDescription, String AccountName);
+    public List<AV> getAllAVByTime(long startTime);
     public List<AV> getAllAccountAV(String accountName);
     public boolean deleteAV(String accountName);
 
@@ -34,7 +42,6 @@ import java.util.List;
 
 public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandler {
 
-   private SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
     private static final int DB_VERSION = 1;
     private static final String DB_NAME = "wafDB";
@@ -114,9 +121,9 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
             Cursor cursor = db.rawQuery(query, null);
             if (cursor.moveToFirst()) {
                 do {
-                    Account account = new Account();
-                    account.name = cursor.getString(0);
-                    account.apiKey = cursor.getString(1);
+                    Account account = new com.wafwaf.wafwaf.Model.Account();
+                    account.setName( cursor.getString(0));
+                    account.setApiKey( cursor.getString(1));
 
                     accountList.add(account);
                 } while (cursor.moveToNext());
@@ -172,7 +179,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
     }
 
     @Override
-    public boolean addAttack(String IP, String country, int startTime, int endTime,  String resultTypes, String account) {
+    public boolean addAttack(String IP, String country, long startTime, long endTime,  String resultTypes, String account) {
         /*IpAddr TEXT NOT NULL, Country TEXT NOT NULL, StartTime INTEGER NOT NULL, EndTime INTEGER NOT NULL, TypeTrace TEXT NOT NULL, ResultTypes TEXT NOT NULL, Account TEXT NOT NULL*/
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -195,7 +202,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
     }
 
     @Override
-    public List<Attack> getAllAttackByTime(int startTime) {
+    public List<Attack> getAllAttackByTime(long startTime) {
         List<Attack> attackList = new ArrayList<Attack>();
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -205,14 +212,14 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
             if (cursor.moveToFirst()) {
                 do {
                     Attack attack = new Attack();
-                    attack.ip = cursor.getString(0);
-                    attack.country = cursor.getString(1);
-                    attack.startAttackTime = dateFormat.format(new Date(Long.parseLong(cursor.getString(2)) * 1000));
-                    attack.endAttackTime = dateFormat.format(new Date(Long.parseLong(cursor.getString(3)) * 1000));
-                    attack.types = cursor.getString(4);
+                    attack.setIp( cursor.getString(0));
+                    attack.setCountry( cursor.getString(1));
+                    attack.setStartAttackTime(Long.parseLong(cursor.getString(2)));
+                    attack.setEndAttackTime(Long.parseLong(cursor.getString(3)));
+                    attack.setTypes(cursor.getString(4));
                     attack.setImgId(cursor.getString(4));
-                    attack.account = cursor.getString(5);
-                    attack.apiKey = getApiKey(attack.account);
+                    attack.setAccount(cursor.getString(5));
+                    attack.setApiKey(getApiKey(attack.getAccount()));
                     attackList.add(attack);
                 } while (cursor.moveToNext());
             }
@@ -238,14 +245,14 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
             if (cursor.moveToFirst()) {
                 do {
                     Attack attack = new Attack();
-                    attack.ip = cursor.getString(0);
-                    attack.country = cursor.getString(1);
-                    attack.startAttackTime = dateFormat.format(new Date(Long.parseLong(cursor.getString(2)) * 1000));
-                    attack.endAttackTime = dateFormat.format(new Date(Long.parseLong(cursor.getString(3)) * 1000));
-                    attack.types = cursor.getString(4);
+                    attack.setIp(cursor.getString(0));
+                    attack.setCountry( cursor.getString(1));
+                    attack.setStartAttackTime(Long.parseLong(cursor.getString(2)));
+                    attack.setEndAttackTime(Long.parseLong(cursor.getString(3)));
+                    attack.setTypes(cursor.getString(4));
                     attack.setImgId(cursor.getString(4));
-                    attack.account = cursor.getString(5);
-                    attack.apiKey = getApiKey(attack.account);
+                    attack.setAccount(cursor.getString(5));
+                    attack.setApiKey(getApiKey(attack.getAccount()));
                     attackList.add(attack);
                 } while (cursor.moveToNext());
             }
@@ -290,7 +297,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
     }
 
     @Override
-    public boolean addAV(int eventTime, String eventType, String fileName, String fileExt, String filePath, String suspicionType, String suspicionDescription, String account) {
+    public boolean addAV(long eventTime, String eventType, String fileName, String fileExt, String filePath, String suspicionType, String suspicionDescription, String account) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("EventTime",eventTime);
@@ -313,7 +320,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
     }
 
     @Override
-    public List<AV> getAllAVByTime(int startTime) {
+    public List<AV> getAllAVByTime(long startTime) {
         List<AV> avList = new ArrayList<AV>();
         SQLiteDatabase db = this.getReadableDatabase();
         try {
@@ -322,12 +329,12 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
             if (cursor.moveToFirst()) {
                 do {
                     AV av = new AV();
-                    av.eventTime = dateFormat.format(new Date(Long.parseLong(cursor.getString(0)) * 1000));
-                    av.eventType = cursor.getString(1);
-                    av.fileName = cursor.getString(2);
-                    av.description = cursor.getString(5) + " " + cursor.getString(6);
+                    av.setEventTime( Long.parseLong(cursor.getString(0)));
+                    av.setEventType( cursor.getString(1));
+                    av.setFileName( cursor.getString(2));
+                    av.setDescription(cursor.getString(5) + " " + cursor.getString(6));
                     av.setImgId(cursor.getString(1));
-                    av.account = cursor.getString(7);
+                    av.setAccount( cursor.getString(7));
                     avList.add(av);
                 } while (cursor.moveToNext());
             }
@@ -352,12 +359,12 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
             if (cursor.moveToFirst()) {
                 do {
                     AV av = new AV();
-                    av.eventTime = dateFormat.format(new Date(Long.parseLong(cursor.getString(0)) * 1000));
-                    av.eventType = cursor.getString(1);
-                    av.fileName = cursor.getString(2);
-                    av.description = cursor.getString(5) + " " + cursor.getString(6);
+                    av.setEventTime(Long.parseLong(cursor.getString(0)));
+                    av.setEventType( cursor.getString(1));
+                    av.setFileName( cursor.getString(2));
+                    av.setDescription( cursor.getString(5) + " " + cursor.getString(6));
                     av.setImgId(cursor.getString(1));
-                    av.account = cursor.getString(7);
+                    av.setAccount( cursor.getString(7));
                     avList.add(av);
                 } while (cursor.moveToNext());
             }

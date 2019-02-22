@@ -10,18 +10,17 @@ import android.content.Context;
 import android.media.AudioAttributes;
 import android.net.Uri;
 import android.os.Build;
-import android.os.PowerManager;
-import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 
-import com.wafwaf.wafwaf.WafLibraryPackege.Antivirus;
-import com.wafwaf.wafwaf.WafLibraryPackege.WafLibrary;
-import com.wafwaf.wafwaf.WafLibraryPackege.sortEvent;
+import com.wafwaf.wafwaf.Manager.AVCardManager;
+import com.wafwaf.wafwaf.Manager.AttackCardManager;
+import com.wafwaf.wafwaf.Model.Account;
+import com.wafwaf.wafwaf.Model.Antivirus;
+import com.wafwaf.wafwaf.Model.SortAttack;
+
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 
@@ -91,33 +90,35 @@ public class WafIntentService extends IntentService {
             int startUnixTime = endUnixTime - 60 * 60 * 24 * 30;
             int time;
 
-            List<sortEvent> listSE = new ArrayList<>();
+            List<SortAttack> listSE = new ArrayList<>();
             List<Antivirus> listAV = new ArrayList<>();
 
             DatabaseHandler db = new DatabaseHandler(this);
-            WafLibrary wafLibrary = new WafLibrary();
+            //WafLibrary wafLibrary = new WafLibrary();
+            AttackCardManager attackManager = new AttackCardManager();
+            AVCardManager avManager = new AVCardManager();
 
             /*listSE = wafLibrary.GetSortEvent(MainActivity.testApiKey, 1538138400,endUnixTime);
             System.out.println(listSE.size());
             System.out.println(wafLibrary.GetJsonEvent(MainActivity.testApiKey, 1538138400,endUnixTime).length());*/
             for (Account account : MainActivity.accountList) {
                 //work = false;
-                time = db.getLastAttackTime(account.name);
+                time = db.getLastAttackTime(account.getName());
                 //System.out.println("time" + time);
                 if (time == 0) {
-                    listSE = wafLibrary.GetSortEvent(account.apiKey, startUnixTime, endUnixTime);
+                    listSE = attackManager.GetAttack(account.getApiKey(), startUnixTime, endUnixTime);
                 } else {
-                    listSE = wafLibrary.GetSortEvent(account.apiKey, time + 1, endUnixTime);
+                    listSE = attackManager.GetAttack(account.getApiKey(), time + 1, endUnixTime);
 
                 }
 
                 //System.out.println("size" + listSE.size());
-                for (sortEvent se : listSE) {
-                    db.addAttack(se.IpAddr, se.Country, se.StartTime, se.EndTime, se.ResultTypes, account.name);
+                for (SortAttack se : listSE) {
+                    db.addAttack(se.getIpAddr(), se.getCountry(), se.getStartTime(), se.getEndTime(), se.getResultTypes(), account.getName());
                 }
 
                 //отслыем сообщение обновить данные  в MainActivity
-                if(listSE.size()>0 && (account.name.equals( MainActivity.accountName) || MainActivity.allAccount)){
+                if(listSE.size()>0 && (account.getName().equals( MainActivity.accountName) || MainActivity.allAccount)){
                     Intent updateIntent = new Intent();
                     updateIntent.setAction(ACTION_UPDATE);
                     updateIntent.addCategory(Intent.CATEGORY_DEFAULT);
@@ -128,21 +129,21 @@ public class WafIntentService extends IntentService {
 
 
 
-                time = db.getLastAVTime(account.name);
+                time = db.getLastAVTime(account.getName());
                 //System.out.println(time);
                 if (time == 0) {
-                    listAV = wafLibrary.GetAV(account.apiKey, startUnixTime, endUnixTime);
+                    listAV = avManager.GetAV(account.getApiKey(), startUnixTime, endUnixTime);
 
                 } else {
-                    listAV = wafLibrary.GetAV(account.apiKey, time+1, endUnixTime);
+                    listAV = avManager.GetAV(account.getApiKey(), time+1, endUnixTime);
                 }
 
 
                 for (Antivirus av : listAV) {
-                    db.addAV(av.EventTime, av.EventType, av.FileName, av.FileExt, av.FilePath, av.SuspiciousType, av.SuspiciousDescription, account.name);
+                    db.addAV(av.getEventTimeUnix(), av.getEventType(), av.getFileName(), av.getFileExt(), av.getFilePath(), av.getSuspiciousType(), av.getSuspiciousDescription(), account.getName());
                 }
                 //отслыем сообщение обновить данные  в MainActivity
-                if(listAV.size()>0 && (account.name.equals( MainActivity.accountName ) || MainActivity.allAccount)){
+                if(listAV.size()>0 && (account.getName().equals( MainActivity.accountName ) || MainActivity.allAccount)){
 
                     Intent updateIntent = new Intent();
                     updateIntent.setAction(ACTION_UPDATE);

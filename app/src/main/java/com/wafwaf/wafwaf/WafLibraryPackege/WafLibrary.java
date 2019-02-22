@@ -1,12 +1,11 @@
 package com.wafwaf.wafwaf.WafLibraryPackege;
 
-import com.wafwaf.wafwaf.Attack;
+import com.wafwaf.wafwaf.WafLibraryPackege.Antivirus;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -15,13 +14,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.net.ssl.HttpsURLConnection;
-
 public class WafLibrary {
 
    public WafLibrary(){}
 
-    public String GetJsonAV(String apiKey, int startTime, int endTime){
+    /*public String GetJsonAV(String apiKey, int startTime, int endTime){
         String json = null;
         // String link = "http://wafwaf.tech/eventav/" + apiKey + "/" + String.valueOf(startTime) + "/" + String.valueOf(endTime);
 
@@ -182,7 +179,7 @@ public class WafLibrary {
                 eventTemp.EndTime = ev.DataTime;
             }
 
-           /* for (String typeTrace:ev.TypeTrace){
+           *//* for (String typeTrace:ev.TypeTrace){
 
                 Integer intTypeTrace = eventTemp.TypeTrace.get(typeTrace);
                 if( intTypeTrace == null){
@@ -191,7 +188,7 @@ public class WafLibrary {
                 }else{
                     eventTemp.TypeTrace.put(typeTrace,intTypeTrace+1);
                 }
-            }*/
+            }*//*
 
             for (String resultTypes:ev.ResultTypes){
                 Integer intRT = eventTemp.ResultTypes.get(resultTypes);
@@ -215,10 +212,10 @@ public class WafLibrary {
             sortEvent.StartTime = entry.getValue().StartTime;
             sortEvent.EndTime = entry.getValue().EndTime;
             //String typeTraceString = "";
-            /*for( Map.Entry<String,Integer> entryTypeTrace: entry.getValue().TypeTrace.entrySet()){
+            *//*for( Map.Entry<String,Integer> entryTypeTrace: entry.getValue().TypeTrace.entrySet()){
                 typeTraceString += entryTypeTrace.getKey() + " ";
             }
-            sortEvent.TypeTrace = typeTraceString +"; ";*/
+            sortEvent.TypeTrace = typeTraceString +"; ";*//*
             String resultTypesString = "";
             for( Map.Entry<String,Integer> entryResultTypes: entry.getValue().ResultTypes.entrySet()){
                 resultTypesString += entryResultTypes.getKey() + "["+String.valueOf(entryResultTypes.getValue())+"]; ";
@@ -232,7 +229,7 @@ public class WafLibrary {
 
         return resultList;
 
-    }
+    }*/
 
 
 }

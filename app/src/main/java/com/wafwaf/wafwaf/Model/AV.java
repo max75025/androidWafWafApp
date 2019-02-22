@@ -1,16 +1,18 @@
-package com.wafwaf.wafwaf;
+package com.wafwaf.wafwaf.Model;
+
+import com.wafwaf.wafwaf.R;
+import com.wafwaf.wafwaf.util.UnixTime;
 
 public class AV {
 
-    String eventTime;
-    String eventType;
-    String fileName;
-    String description;
-    /*String type2;*/
-    int imgId;
-    String account;
+    private long eventTime;
+    private String eventType;
+    private String fileName;
+    private String description;
+    private int imgId;
+    private String account;
 
-    void setImgId(String eventType){
+    public void setImgId(String eventType){
         switch (eventType){
             case "Новый"   : this.imgId = R.drawable.add_file; break;
             case "Изменен" : this.imgId = R.drawable.edit_file;break;
@@ -19,9 +21,9 @@ public class AV {
 
     }
 
-    AV(){}
+    public AV(){}
 
-    AV(String eventTime, String eventType, String fileName, String SuspiciousType, String SuspiciousDescription, String account) {
+    public AV(long eventTime, String eventType, String fileName, String SuspiciousType, String SuspiciousDescription, String account) {
         this.eventTime = eventTime;
         this.eventType = eventType;
         this.fileName = fileName;
@@ -36,8 +38,11 @@ public class AV {
     }
 
     public String getEventTime(){
-        return eventTime;
+        return UnixTime.toDate(eventTime);
     }
+
+    public long getEventTimeUnix(){return eventTime;}
+
     public String getEventType(){
         return eventType;
     }public String getFileName(){
@@ -51,7 +56,7 @@ public class AV {
     }
 
 
-    public void setEventTime(String eventTime){
+    public void setEventTime(long eventTime){
        this.eventTime = eventTime;
     }
     public void setEventType(String eventType){

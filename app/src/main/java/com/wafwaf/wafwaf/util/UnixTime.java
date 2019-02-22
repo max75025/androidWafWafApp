@@ -11,8 +11,8 @@ public class UnixTime {
     /**
      * return string with date format yyyy/MM/dd HH:mm:ss
      * */
-    public static String toDate(String unixTime){
-        return dateFormat.format(new Date(Long.parseLong(unixTime) * 1000));
+    public static String toDate(long unixTime){
+        return dateFormat.format(new Date(unixTime * 1000));
     }
 
     public static String toUnix(String date){

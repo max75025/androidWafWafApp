@@ -67,10 +67,6 @@ import static com.wafwaf.wafwaf.util.JumpPermissionManagement.GoToSetting;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, AddNewSiteDialogFragment.addSiteDialogListener, deleteAccountDialog.deleteDialogListener {
 
 
-    static final String wafSitePanel = "https://wafwaf.tech/statepanel";
-    static final String wafSiteChat = "https://tawk.to/chat/5b09db7410b99c7b36d45674/default";
-    static final String wafTelegram = "https://t.me/wafwaftech";
-
     public static String PACKAGE_NAME;
     private static String TAG = "MainActivity";
 
@@ -354,7 +350,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onClick(View v) {
-                openSite(wafSitePanel);
+                openSite(getString(R.string.link_panel));
             }
         });
 
@@ -455,10 +451,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 //showRawLogs();
                 break;
             case R.id.action_chat:
-                openSite(wafSiteChat);
+                openSite(getString(R.string.link_tawk_chat));
                 break;
             case R.id.action_telegram:
-                openSite(wafTelegram);
+                openSite(getString(R.string.link_telegram));
                 break;
         }
 

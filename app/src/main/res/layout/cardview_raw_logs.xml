@@ -1,59 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        >
+
+        <ImageButton
+            android:id="@+id/button_share_log"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            >
-            <LinearLayout
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:background="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_menu_share" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:id="@+id/attack_time"
+                android:textSize="15sp"
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/attack_time"
-                    android:textSize="15sp"
+                />
 
-                    />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/attack_direction"
+                android:textSize="25sp"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMaxTextSize="28sp"
+                android:autoSizeMinTextSize="20sp"
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/attack_direction"
-                    android:textSize="25sp"
-                    android:autoSizeTextType="uniform"
-                    android:autoSizeMaxTextSize="28sp"
-                    android:autoSizeMinTextSize="20sp"
-
-                    />
-                <HorizontalScrollView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                />
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/attack_package"
                     android:textSize="15sp"
-                    android:maxLines="4"
+
                     android:scrollHorizontally="true"
                     />
-
-                </HorizontalScrollView>
-
-
-                </LinearLayout>
+                <!--android:maxLines="4"-->
+            </HorizontalScrollView>
 
 
+        </LinearLayout>
 
-        </RelativeLayout>
+
+
+    </RelativeLayout>
     <View
         android:id="@+id/delimeter_view"
         android:layout_width="match_parent"

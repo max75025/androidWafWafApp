@@ -22,6 +22,7 @@ public class AttackCardManager {
     private String GetJsonEvent(String apiKey, int startTime, int endTime){
         String json = null;
         try{
+
             URL url = new URL("https://2waf.com/eventclient/" + apiKey + "/" + String.valueOf(startTime) + "/" + String.valueOf(endTime));
             HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
             connection.setRequestMethod("GET");

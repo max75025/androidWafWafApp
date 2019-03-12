@@ -104,15 +104,15 @@ public class RVAttackAdapter extends RecyclerView.Adapter<RVAttackAdapter.CardVi
                                 new AttackRawLogsManager().run(mContext,
                                                                mData.get(holder.getAdapterPosition()).getApiKey(),
                                                                mData.get(holder.getAdapterPosition()).getIp(),
-                                                               UnixTime.toUnix(mData.get(holder.getAdapterPosition()).getStartAttackTime()),
-                                                               UnixTime.toUnix(mData.get(holder.getAdapterPosition()).getEndAttackTime()) );
+                                                               String.valueOf(mData.get(holder.getAdapterPosition()).getStartAttackTimeUnix()),
+                                                               String.valueOf(mData.get(holder.getAdapterPosition()).getEndAttackTimeUnix()) );
                                 return true;
                             case R.id.menu_ip_info:
                                     new IpInfoManager().run(mContext,mData.get(holder.getAdapterPosition()).getApiKey()  , mData.get(holder.getAdapterPosition()).getIp());
                                 return true;
-                            case R.id.menu_share:
+                            /*case R.id.menu_share:
                                 Toast.makeText(mContext, "you clicked" + mData.get(holder.getAdapterPosition()).getIp() , Toast.LENGTH_SHORT).show();
-                                return true;
+                                return true;*/
                             default:
                                 return false;
                         }

@@ -44,7 +44,9 @@ public class JumpPermissionManagement {
             case MANUFACTURER_LG:
                 LG(activity);
                 break;
-
+            case MANUFACTURER_XIAOMI:
+                Xiaomi(activity);
+                break;
             default:
 
         }
@@ -118,12 +120,29 @@ public class JumpPermissionManagement {
 
 
 
-    public static void Xiaomi(Activity activity) {
-        Intent intent = new Intent("miui.intent.action.APP_PERM_EDITOR");
+    public static void Xiaomi(final Activity activity) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle(R.string.attention)
+                .setMessage(R.string.allow_for_meizu)
+                .setCancelable(true)
+                .setNegativeButton(R.string.positive_button,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Intent intent = new Intent("miui.intent.action.APP_PERM_EDITOR");
+                                ComponentName componentName = new ComponentName("com.miui.securitycenter", "com.miui.permcenter.permissions.PermissionsEditorActivity");
+                                intent.setComponent(componentName);
+                                intent.putExtra("extra_pkgname", BuildConfig.APPLICATION_ID);
+                                activity.startActivity(intent);
+                            }
+                        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
+        /*Intent intent = new Intent("miui.intent.action.APP_PERM_EDITOR");
         ComponentName componentName = new ComponentName("com.miui.securitycenter", "com.miui.permcenter.permissions.PermissionsEditorActivity");
         intent.setComponent(componentName);
         intent.putExtra("extra_pkgname", BuildConfig.APPLICATION_ID);
-        activity.startActivity(intent);
+        activity.startActivity(intent);*/
     }
 
     public static void Sony(Activity activity) {

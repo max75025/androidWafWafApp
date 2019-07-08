@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">2waf</string>
-    <string name="version">0.21 beta</string>
+    <string name="version">0.26 beta</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -17,6 +17,9 @@
     <string name="tab1_fragment_name">атаки</string>
     <string name="tab2_fragment_name">антивирус</string>
 
+    <string name="empty_attack_string">атаки отсуствуют</string>
+    <string name="empty_av_string">события файловой системы отсутствуют</string>
+
     <string name="toast_error_find_account">текущий аккаунт отсутствует или не выбран</string>
     <string name="toast_error_add_account">ошибка добавления аккаунта</string>
     <string name="toast_error_ethernet_conn">не получилось связаться с сервером, проверьте интернет соединение</string>
@@ -32,26 +35,27 @@
     <string name="unstable_os_attention">Возможна нестабильная работа оповещений на вашей версии Android OS</string>
     <string name="attention">Внимание</string>
     <string name="allow_for_meizu">Для стабильной работы приложения перейдите в "<b>Работа в фоне</b>" и установите значение "<b>Разрешить работу в фоне</b>" в противном случае вы не будете получать уведомления. </string>
+    <string name="allow_for_background">Для стабильной работы приложения снимите с него все ограничения в противном случае вы не будете получать уведомления. </string>
     <string name="site">сайт</string>
     <string name="for_nexus_5x_owners">А ты рисковый. Телефончик то в любой момент может поймать отвал чипа. Но ничего, я с тобой. Если что - делай ребол.</string>
 
     <string name="protection_none">none</string>
-    <string name="protection_none_description">\u0020(some description of this protection to test, big description, but still normal view)\u0020</string>
+    <string name="protection_none_description">\u0020(Защита блокирует атаки, но не блокирует IP атакующего)\u0020\n</string>
     <string name="protection_standard">standard</string>
-    <string name="protection_standard_description">\u0020(some description of this protection to test, big description, but still normal view)\u0020</string>
+    <string name="protection_standard_description">\u0020(Рекомендуется. Защита блокирует атаки и при этом применяет временную блокировку IP)\u0020\n</string>
     <string name="protection_strong">strong</string>
-    <string name="protection_strong_description">\u0020(some description of this protection to test, big description, but still normal view)\u0020</string>
+    <string name="protection_strong_description">\u0020(Защита блокирует атаки, а также IP адрес на более существенное время)\u0020\n</string>
     <string name="protection_extreme">extreme</string>
-    <string name="protection_extreme_description">\u0020(some description of this protection to test, big description, but still normal view)\u0020</string>
+    <string name="protection_extreme_description">\u0020(Блокирует атаки, а также IP вдреса атакующих после первого срабатывания на длительное время. Включать при персистентной череде срабатываний)\u0020\n</string>
     <string name="protection_custom">custom</string>
-    <string name="protection_custom_description">\u0020(some description of this protection to test, big description, but still normal view)\u0020</string>
+    <string name="protection_custom_description">\u0020(Настройки выставленные через личный кабинет)\u0020\n</string>
 
     <string name="rawLogs">raw logs</string>
     <string name="share">share</string>
     <string name="ip_info">ip info</string>
 
     <string name="add_site">добавить сайт</string>
-    <string name="recent">недавние</string>
+    <string name="recent">недавние (24 часа)</string>
 
 
     <string name="ip_info_header">Информация по Ip адресу за весь период</string>

@@ -4,6 +4,14 @@
     android:layout_height="match_parent"
     >
 
+    <TextView
+        android:id="@+id/empty_attack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/empty_attack_string"
+        android:textSize="36sp"
+        />
 
     <android.support.v7.widget.RecyclerView
         android:scrollbars="vertical"
@@ -13,12 +21,10 @@
         android:layoutAnimation="@anim/layout_animation_fall_down"
         />
 
-    <!--<TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Tab attack"
-        android:textSize="36sp" />-->
+
+
+
+
 
 
 

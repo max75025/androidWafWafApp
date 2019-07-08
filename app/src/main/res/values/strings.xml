@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">2waf</string>
-    <string name="version">0.26 beta</string>
+    <string name="version">0.27 beta</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -18,7 +18,7 @@
     <string name="tab2_fragment_name">антивирус</string>
 
     <string name="empty_attack_string">атаки отсуствуют</string>
-    <string name="empty_av_string">события файловой системы отсутствуют</string>
+    <string name="empty_av_string">изменения файловой системы отсутствуют</string>
 
     <string name="toast_error_find_account">текущий аккаунт отсутствует или не выбран</string>
     <string name="toast_error_add_account">ошибка добавления аккаунта</string>

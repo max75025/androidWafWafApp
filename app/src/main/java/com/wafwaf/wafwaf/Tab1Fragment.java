@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.wafwaf.wafwaf.Adapter.RVAttackAdapter;
@@ -20,7 +21,7 @@ import java.util.List;
 
 public class Tab1Fragment extends Fragment implements MainActivity.SentDataToRVAttackAdapter {
     RVAttackAdapter rvAttackAdapter;
-    TextView empty;
+    LinearLayout empty;
     RecyclerView rv;
 
     //int endUnixTime = (int) (System.currentTimeMillis() / 1000L);

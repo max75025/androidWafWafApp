@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.wafwaf.wafwaf.Adapter.RVAVAdapter;
@@ -21,7 +22,7 @@ public class Tab2Fragment extends Fragment implements MainActivity.SentDataToRVA
 
     //int endUnixTime = (int) (System.currentTimeMillis() / 1000L);
     //int startUnixTime = endUnixTime - 60 * 60 * 24 * 10;
-    TextView empty;
+    LinearLayout empty;
     RecyclerView rv;
 
 

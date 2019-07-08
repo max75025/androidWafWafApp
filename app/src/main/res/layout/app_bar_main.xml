@@ -22,7 +22,9 @@
             app:layout_collapseMode="pin"
             app:layout_scrollFlags="enterAlways"
             app:theme="@style/ThemeOverlay.AppCompat"
-            app:title="@string/app_name"
+            app:title="@string/toolbar_header"
+            app:titleTextAppearance="@style/ToolbarHeaderStyle"
+
             />
         <!--app:layout_scrollFlags="scroll|enterAlways"  если нужно скрывать верхнее меню-->
 

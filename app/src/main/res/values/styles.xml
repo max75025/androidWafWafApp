@@ -17,6 +17,11 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="ToolbarHeaderStyle" parent="@style/Base.TextAppearance.AppCompat.Title">
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
     <!--<style name="MyToolbarTheme"
         parent="@style/ThemeOverlay.AppCompat">
         <item name="colorControlNormal">@color/colorWhite</item>

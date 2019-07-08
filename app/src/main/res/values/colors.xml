@@ -12,4 +12,6 @@
     <color name="cardColor">#f1f1f1</color>
    <color name="colorRed">#FFB30000</color>
     <color name="buttonColor">#6F6F6F</color>
+    <color name="colorLightGrey">#a1a1a1</color>
+
 </resources>

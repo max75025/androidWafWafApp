@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:id="@+id/add_group" >
+    <group android:id="@+id/add_group">
         <item
             android:id="@+id/nav_add_site"
             android:icon="@drawable/ic_plus"
@@ -12,7 +12,8 @@
         <item
             android:id="@+id/nav_all_site"
             android:icon="@drawable/ic_24_hours"
-            android:title="@string/recent" />
+            android:title="@string/recent"
+            />
         <!--<item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_menu_gallery"

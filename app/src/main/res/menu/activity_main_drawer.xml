@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:id="@+id/add_group">
+<group android:id="@+id/add_group">
         <item
             android:id="@+id/nav_add_site"
             android:icon="@drawable/ic_plus"
@@ -26,11 +26,16 @@
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
             android:title="Tools" />-->
-    </group>
+</group>
+<item android:title="@string/site_submenu_header" android:id="@+id/site_list_item" >
+        <menu>
+                <group android:id="@+id/site_list" android:checkableBehavior="single">
 
-    <group android:id="@+id/site_list" android:checkableBehavior="single">
+                </group>
 
-    </group>
+        </menu>
+</item>
+
 
 
 

@@ -36,7 +36,7 @@ public class RVAVAdapter extends RecyclerView.Adapter<RVAVAdapter.CardViewHolder
 
     private List<AV> mData;
     private LayoutInflater mInflater;
-    private RVAVAdapter.ItemClickListener mClickListener;
+    private ItemClickListener mClickListener;
 
     // data is passed into the constructor
     public RVAVAdapter(Context context, List<AV> data) {
@@ -47,15 +47,15 @@ public class RVAVAdapter extends RecyclerView.Adapter<RVAVAdapter.CardViewHolder
 
     // inflates the row layout from xml when needed
     @Override
-    public RVAVAdapter.CardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.cardviewav, parent, false);
-        RVAVAdapter.CardViewHolder cvh = new RVAVAdapter.CardViewHolder(view);
+        CardViewHolder cvh = new CardViewHolder(view);
         return cvh;
     }
 
     // binds the data to the TextView in each row
     @Override
-    public void onBindViewHolder(RVAVAdapter.CardViewHolder holder, int position) {
+    public void onBindViewHolder(CardViewHolder holder, int position) {
         holder.file.setText(mData.get(position).getFileName());
         holder.timeAndType.setText(mData.get(position).getEventType() +" ("+mData.get(position).getEventTime()+")");
         holder.description.setText(mData.get(position).getDescription());
@@ -93,7 +93,7 @@ public class RVAVAdapter extends RecyclerView.Adapter<RVAVAdapter.CardViewHolder
     }
 
     // allows clicks events to be caught
-    void setClickListener(RVAVAdapter.ItemClickListener itemClickListener) {
+    void setClickListener(ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
 

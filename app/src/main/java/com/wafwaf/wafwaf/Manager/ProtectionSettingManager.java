@@ -90,8 +90,8 @@ public class ProtectionSettingManager {
         final CharSequence[] items = {none, standard, strong, extreme};
 
         // Creating and Building the Dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Select protection Level");
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogStyle);
+        builder.setTitle("Выбирите уровень защиты:");
         builder.setSingleChoiceItems(items, currentPreset, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
 
@@ -115,6 +115,13 @@ public class ProtectionSettingManager {
                 dialog.dismiss();
             }
         });
+        builder.setNegativeButton("отмена", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+                dialog.dismiss();
+            }
+        });
+
         AlertDialog levelDialog = builder.create();
         if (currentPreset == -1){
             Toast.makeText(context, context.getString(R.string.toast_custom_preset_is_set), Toast.LENGTH_LONG).show();

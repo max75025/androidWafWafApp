@@ -3,10 +3,15 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-       <!-- <item name="colorPrimary">@color/colorPrimary</item>-->
-        <item name="colorPrimaryDark">@color/colorGreen</item>
-        <!--<item name="colorAccent">@color/colorAccent</item>-->
+
+        <item name="colorPrimaryDark">@color/colorAccentDark</item>
+        <item name="drawerArrowStyle">@style/hamburgerIconTheme</item>
+
+        <item name="android:popupMenuStyle">@style/PopupMenuStyle</item>
+
+        <item name="android:itemTextAppearance">@style/CardPopupMenuTextStyle</item>
     </style>
+
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
@@ -14,7 +19,6 @@
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="ToolbarHeaderStyle" parent="@style/Base.TextAppearance.AppCompat.Title">
@@ -22,10 +26,66 @@
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
+    <style name="MenuStyle" >
+        <!--<item name="android:titleTextStyle">@style/SubMenuTextStyle</item>
+        <item name="android:subtitleTextStyle">@style/SubMenuTextStyle</item>-->
+        <item name="android:itemTextAppearance">@style/MenuTextStyle</item>
+
+
+    </style>
     <style name="MenuTextStyle" >
         <item name="android:textSize">16sp</item>
         <item name="android:fontFamily">sans-serif-thin</item>
+
+
     </style>
+
+    <style name="SubMenuTextStyle"  >
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="hamburgerIconTheme" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@color/colorWhite</item>
+    </style>
+
+
+
+
+
+    <style name="PopupMenuStyle" >
+        <item name="android:popupBackground">@color/colorBackgroundGrey</item>
+    </style>
+
+
+
+    <!--text style inside popup menu -->
+    <style name="CardPopupMenuTextStyle" parent="@android:style/Widget.Holo.Light.TextView">
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+
+    <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textColorPrimary">@color/colorWhite</item>
+        <item name="android:textColorSecondary">@color/colorWhite</item>
+        <item name="android:background">@color/colorMainGrey</item>
+        <item name="textColorAlertDialogListItem">@color/colorWhite</item>
+    </style>
+
+    <style name="AlertDeleteDialogStyle" parent="@style/AlertDialogStyle">
+        <item name="buttonBarPositiveButtonStyle">@style/AlertDialogNegativeButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/AlertDialogPositiveButtonStyle</item>
+    </style>
+    <style name="AlertDialogPositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/colorAccentDark</item>
+    </style>
+    <style name="AlertDialogNegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/colorRed</item>
+    </style>
+
+
 
     <!--<style name="MyToolbarTheme"
         parent="@style/ThemeOverlay.AppCompat">

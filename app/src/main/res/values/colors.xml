@@ -2,7 +2,7 @@
 <resources>
    <!-- <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>-->
-    <color name="colorAccent">#FF4081</color>
+    <!--<color name="colorAccent">#FF4081</color>-->
     <color name="colorWhite">#EFEFEF</color>
     <color name="colorWhiteDark">#E5E5E5</color>
     <color name="colorGreen">#477F2E</color>
@@ -13,5 +13,10 @@
    <color name="colorRed">#FFB30000</color>
     <color name="buttonColor">#6F6F6F</color>
     <color name="colorLightGrey">#a1a1a1</color>
+    <color name="colorBackgroundGrey">#485461</color>
+    <color name="colorMainGrey">#363f4a</color>
+    <color name="colorAccentDark">#469781</color>
+    <color name="colorAccent">#57b99e</color>
+
 
 </resources>

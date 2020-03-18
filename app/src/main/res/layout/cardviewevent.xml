@@ -13,6 +13,7 @@
         card_view:cardElevation="4dp"
         card_view:cardUseCompatPadding="true"
         android:background="@color/cardColor"
+        card_view:cardBackgroundColor="@color/colorMainGrey"
         >
         <RelativeLayout
             android:layout_width="match_parent"
@@ -28,9 +29,10 @@
                 android:layout_alignParentTop="true"
                 android:paddingLeft="10dp"
                 android:text="&#8942;"
-                android:textColor="@color/buttonColor"
+
                 android:textStyle="bold"
-                android:textAppearance="?android:textAppearanceLarge" />
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textColor="@color/colorWhite"/>
             <ImageView
                 android:layout_width="80dp"
                 android:layout_height="80dp"
@@ -52,6 +54,7 @@
                     android:autoSizeTextType="uniform"
                     android:autoSizeMaxTextSize="28sp"
                     android:autoSizeMinTextSize="20sp"
+                    android:textColor="@color/colorWhite"
 
                     />
                 <!--<TextView
@@ -67,6 +70,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/attack_start"
                     android:textSize="15sp"
+                    android:textColor="@color/colorWhite"
 
                     />
                 <TextView
@@ -75,6 +79,7 @@
                     android:id="@+id/attack_end"
                     android:textSize="15sp"
                     android:singleLine="true"
+                    android:textColor="@color/colorWhite"
                     />
                 <TextView
                     android:layout_width="wrap_content"
@@ -82,6 +87,7 @@
                     android:id="@+id/attack_account"
                     android:textStyle="bold"
                     android:textSize="15sp"
+                    android:textColor="@color/colorWhite"
                     />
                 <LinearLayout
                     android:id ="@+id/types"
@@ -95,6 +101,7 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/attack_type"
                         android:textSize="15sp"
+                        android:textColor="@color/colorWhite"
 
                         />
 

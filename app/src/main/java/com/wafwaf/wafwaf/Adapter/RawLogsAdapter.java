@@ -82,7 +82,7 @@ public class RawLogsAdapter extends RecyclerView.Adapter<RawLogsAdapter.RawLogsV
 
     @NonNull
     @Override
-    public RawLogsAdapter.RawLogsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RawLogsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cardview_raw_logs, parent, false);
 
@@ -92,7 +92,7 @@ public class RawLogsAdapter extends RecyclerView.Adapter<RawLogsAdapter.RawLogsV
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final RawLogsAdapter.RawLogsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final RawLogsViewHolder holder, int position) {
         holder.bind(rawLogsList.get(position));
         holder.shareButton.setOnClickListener(new View.OnClickListener() {
             @Override

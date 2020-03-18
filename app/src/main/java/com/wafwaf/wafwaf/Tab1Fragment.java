@@ -23,6 +23,7 @@ public class Tab1Fragment extends Fragment implements MainActivity.SentDataToRVA
     RVAttackAdapter rvAttackAdapter;
     LinearLayout empty;
     RecyclerView rv;
+    TextView emptyText;
 
     //int endUnixTime = (int) (System.currentTimeMillis() / 1000L);
     //int startUnixTime = endUnixTime - 60 * 60 * 24 * 10;
@@ -30,6 +31,7 @@ public class Tab1Fragment extends Fragment implements MainActivity.SentDataToRVA
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View attackView = getLayoutInflater().inflate(R.layout.fragment_attack,container,false);
+        emptyText = attackView.findViewById(R.id.empty_attack_text);
 
 
          List<Attack> attacks = new ArrayList<>();
@@ -86,5 +88,10 @@ public class Tab1Fragment extends Fragment implements MainActivity.SentDataToRVA
     public void addAttacks(List<Attack> data) {
         rvAttackAdapter.addAttack(data);
         checkEmpty();
+    }
+
+    public void setEmptyText(int str){
+        emptyText.setText(str);
+
     }
 }

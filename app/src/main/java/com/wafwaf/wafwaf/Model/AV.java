@@ -14,9 +14,9 @@ public class AV {
 
     public void setImgId(String eventType){
         switch (eventType){
-            case "Новый"   : this.imgId = R.drawable.add_file; break;
-            case "Изменен" : this.imgId = R.drawable.edit_file;break;
-            case "Удален"  : this.imgId = R.drawable.delete_file;break;
+            case "Новый"   : this.imgId = R.drawable.add_file_color; break;
+            case "Изменен" : this.imgId = R.drawable.edit_file_color;break;
+            case "Удален"  : this.imgId = R.drawable.delete_file_color;break;
         }
 
     }
@@ -29,9 +29,9 @@ public class AV {
         this.fileName = fileName;
         this.description = SuspiciousType + SuspiciousDescription;
         switch (eventType){
-            case "Новый"   : this.imgId = R.drawable.add_file;
-            case "Изменен" : this.imgId = R.drawable.edit_file;
-            case "Удален"  : this.imgId = R.drawable.delete_file;
+            case "Новый"   : this.imgId = R.drawable.add_file_color; break;
+            case "Изменен" : this.imgId = R.drawable.edit_file_color;break;
+            case "Удален"  : this.imgId = R.drawable.delete_file_color;break;
         }
         this.account = account;
 

@@ -16,14 +16,16 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorWhiteDark"
+            android:background="@color/colorMainGrey"
             app:popupTheme="@style/ThemeOverlay.AppCompat"
+
 
             app:layout_collapseMode="pin"
             app:layout_scrollFlags="enterAlways"
             app:theme="@style/ThemeOverlay.AppCompat"
             app:title="@string/toolbar_header"
             app:titleTextAppearance="@style/ToolbarHeaderStyle"
+            app:titleTextColor="@color/colorWhite"
 
             />
         <!--app:layout_scrollFlags="scroll|enterAlways"  если нужно скрывать верхнее меню-->

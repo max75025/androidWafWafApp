@@ -11,7 +11,8 @@
     <include
         layout="@layout/app_bar_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        />
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
@@ -22,6 +23,10 @@
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_main_drawer"
         app:itemTextAppearance="@style/MenuTextStyle"
+        android:background="@color/colorBackgroundGrey"
+        app:itemTextColor="@color/colorWhite"
+        app:itemIconTint="@color/colorGrey"
+
         >
 
         <Button
@@ -30,7 +35,10 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_gravity="bottom"
-            android:theme="@style/Widget.AppCompat.Button"/>
+            android:theme="@style/Widget.AppCompat.Button"
+            android:textAppearance="@style/MenuTextStyle"
+            android:background="@color/colorMainGrey"
+            android:textColor="@color/colorWhite"/>
     </android.support.design.widget.NavigationView>
 
 

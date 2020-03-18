@@ -3,6 +3,7 @@ package com.wafwaf.wafwaf.Manager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
+import android.view.ContextThemeWrapper;
 import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -73,8 +74,9 @@ public class IpInfoManager {
                 context.getString(R.string.vectors) + info.vectors + "\n";
 
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(R.string.ip_info_header)
+        /*AlertDialog.Builder builder = new AlertDialog.Builder(context);*/
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.AlertDialogStyle))
+        .setTitle(R.string.ip_info_header)
                 .setMessage(message)
                 .setCancelable(true)
                 .setNegativeButton(R.string.positive_button,
@@ -85,6 +87,7 @@ public class IpInfoManager {
                         });
 
         AlertDialog alert = builder.create();
+
         alert.show();
     }
 

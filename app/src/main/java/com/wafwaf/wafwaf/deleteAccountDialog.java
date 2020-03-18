@@ -11,7 +11,7 @@ public class deleteAccountDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDeleteDialogStyle);
         builder.setMessage("вы уверены что хотите удалить аккаунт?")
                 .setPositiveButton("удалить", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {

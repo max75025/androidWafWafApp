@@ -15,7 +15,7 @@ public class SyncJob extends Job {
 
     static final String TAG = "sync_job_tag";
 
-    private SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     private Uri notificationUrl = Uri.parse("android.resource://" + MainActivity.PACKAGE_NAME + "/" + R.raw.notification);
 
     public static final String ACTION_UPDATE="com.wafwaf.wafwaf.UPDATE";

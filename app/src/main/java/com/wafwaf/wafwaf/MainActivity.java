@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.media.AudioAttributes;
 import android.net.Uri;
@@ -21,6 +22,7 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.customtabs.CustomTabsIntent;
+import android.support.design.internal.NavigationMenu;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -30,9 +32,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
+import android.text.SpannableString;
+import android.text.style.TextAppearanceSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -141,7 +147,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             accountList.add(new Account(name, apiKey));
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             Menu menu = navigationView.getMenu();
-            menu.add(R.id.site_list, 1, 0, name);
+            SubMenu smenu = menu.findItem(R.id.site_list_item).getSubMenu();
+            smenu.add(R.id.site_list, 1, 0, name);
+
+            //change text in view
+            //TextView emptyAttack = findViewById(R.id.empty_attack_text);
+            //TextView emptyAV = findViewById(R.id.empty_av_text);
+            //emptyAttack.setText(R.string.empty_attack_string);
+            //emptyAV.setText(R.string.empty_av_string);
 
 
         } else {
@@ -271,24 +284,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //endregion
 
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
-        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        viewPager = findViewById(R.id.viewPager);
+        tabLayout = findViewById(R.id.tabLayout);
 
 
         tbAdapter = new TabAdapter(getSupportFragmentManager());
+
 
         rvAttackAdapter = new RVAttackAdapter(this, null);
 
 
         Tab1Fragment tab1Fragment = new Tab1Fragment();
-        sentDataToRVAttackAdapter = (SentDataToRVAttackAdapter) tab1Fragment;
+        sentDataToRVAttackAdapter =  tab1Fragment;
 
         Tab2Fragment tab2Fragment = new Tab2Fragment();
-        sentDataToRVAVAdapter = (SentDataToRVAVAdapter) tab2Fragment;
+        sentDataToRVAVAdapter = tab2Fragment;
         tbAdapter.addFragment(tab1Fragment, getString(R.string.tab1_fragment_name));
         tbAdapter.addFragment(tab2Fragment, getString(R.string.tab2_fragment_name));
         /*adapter.addFragment(new Tab3Fragment(), "Tab 3");*/
@@ -296,9 +310,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         tabLayout.setupWithViewPager(viewPager);
 
 
+
         //устанавливаем customView для табов чтоб можно было отобразить красную точку
         tabAttack = tabLayout.getTabAt(0);
         tabAV = tabLayout.getTabAt(1);
+
 
         tabAttack.setCustomView(R.layout.baged_tab);
         tabAV.setCustomView(R.layout.baged_tab);
@@ -329,12 +345,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         accountList = db.getAllAccount();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         Menu menu = navigationView.getMenu();
+        MenuItem sm= menu.findItem(R.id.site_list_item);
+        SpannableString s = new SpannableString(sm.getTitle());
+        s.setSpan(new TextAppearanceSpan(this, R.style.SubMenuTextStyle), 0, s.length(), 0);
+        sm.setTitle(s);
+
+        SubMenu smenu = menu.findItem(R.id.site_list_item).getSubMenu();
         if (accountList.size() > 0) {
 
             for (Account account : accountList) {
-                menu.add(R.id.site_list, 1, 0, account.getName());
+                smenu.add(R.id.site_list, 1, 0, account.getName());
             }
             //accountName = accountList.get(0).name;
         }
@@ -344,8 +366,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         menu.findItem(R.id.nav_all_site).setChecked(true);
         allAccount = true;
 
+        if (accountList.size()==0) {
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            DialogFragment addDialog = new AddNewSiteDialogFragment();
+            addDialog.show(ft, "addSiteDialog");
 
-        Button siteButton = (Button) navigationView.findViewById(R.id.site_button);
+            //change text in view to "account empty"
+            //tab1Fragment.setEmptyText(R.string.em);
+
+            /*TextView emptyAttack = (TextView) findViewById(R.id.empty_attack_text);
+            TextView emptyAV =  (TextView) findViewById(R.id.empty_av_text);
+            emptyAttack.setText(R.string.empty_account);
+            emptyAV.setText(R.string.empty_account);*/
+        }
+
+
+
+
+        Button siteButton = navigationView.findViewById(R.id.site_button);
         siteButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -355,7 +393,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -404,7 +442,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -547,7 +585,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             sentDataToRVAttackAdapter.setData(attacks);
             sentDataToRVAVAdapter.setData(avs);
 
-            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            NavigationView navigationView = findViewById(R.id.nav_view);
             Menu menu = navigationView.getMenu();
             onPrepareOptionsMenu(menu);
 
@@ -576,7 +614,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer =  findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -661,7 +699,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public static boolean sendApiKeyAndFCMtoken(String apiKey) {
         Log.d(TAG, "sendApiKeyAndFCMtoken: start");
-        String stringUrl = "http://91.194.79.90:1313/addNewFCM/";
+       /* String stringUrl = "http://91.194.79.90:1313/addNewFCM/";*/
+        String stringUrl = "http://r.2waf.com:1313/addNewFCM/";
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                 .permitAll().build();
@@ -718,7 +757,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public static boolean deleteFCMAccountOnServer(String apiKey) {
         //Log.d(TAG, "sendApiKeyAndFCMtoken: start");
-        String stringUrl = "http://91.194.79.90:1313/deleteFCM/";
+        /*String stringUrl = "http://91.194.79.90:1313/deleteFCM/";*/
+        String stringUrl = "http://r.2waf.com:1313/deleteFCM/";
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                 .permitAll().build();
@@ -769,7 +809,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public static void syncApiKeysWithFCM() {
         // final String json = new Gson().toJson(accountList);
-        final String stringUrl = "http://91.194.79.90:1313/syncFCM/";
+        /*final String stringUrl = "http://91.194.79.90:1313/syncFCM/";*/
+       /* final String stringUrl = Resources.getSystem().getString(R.string.link_sync_fcm);*/
+        final String stringUrl = "http://r.2waf.com:1313/syncFCM/";
 
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {

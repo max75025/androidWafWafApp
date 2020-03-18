@@ -28,27 +28,27 @@ public class Attack {
             return;
         }
         if (types.contains("clientside")){
-            this.imgId = R.drawable.clientside;
+            this.imgId = R.drawable.clientside_color;
             return;
         }
         if (types.contains("database")){
-            this.imgId = R.drawable.database;
+            this.imgId = R.drawable.database_color;
             return;
         }
         if (types.contains("serverside")){
-            this.imgId = R.drawable.serverside;
+            this.imgId = R.drawable.serverside_color;
             return;
         }
         if (types.contains("basicrisk")){
-            this.imgId = R.drawable.basicrisk;
+            this.imgId = R.drawable.basicrisk_color;
             return;
         }
         if (types.contains("criticalrisk")){
-            this.imgId = R.drawable.criticalrisk;
+            this.imgId = R.drawable.criticalrisk_color;
             return;
         }
         if (types.contains("fatalrisk")){
-            this.imgId = R.drawable.fatalrisk;
+            this.imgId = R.drawable.fatalrisk_color;
             return;
         }
 

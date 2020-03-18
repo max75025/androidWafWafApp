@@ -12,6 +12,7 @@
         android:id="@+id/cardView"
         card_view:cardElevation="4dp"
         card_view:cardUseCompatPadding="true"
+        card_view:cardBackgroundColor="@color/colorMainGrey"
         >
         <RelativeLayout
             android:layout_width="match_parent"
@@ -39,6 +40,7 @@
                     android:autoSizeMaxTextSize="28sp"
                     android:autoSizeMinTextSize="20sp"
                     android:singleLine="true"
+                    android:textColor="@color/colorWhite"
 
                     />
 
@@ -47,6 +49,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/av_time"
                     android:textSize="15sp"
+                    android:textColor="@color/colorWhite"
 
                     />
 
@@ -56,6 +59,7 @@
                     android:id="@+id/av_account"
                     android:textSize="15sp"
                     android:textStyle="bold"
+                    android:textColor="@color/colorWhite"
                     />
 
                 <LinearLayout
@@ -71,6 +75,7 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/av_description"
                         android:textSize="15sp"
+                        android:textColor="@color/colorWhite"
                         />
 
                 </LinearLayout>

@@ -25,7 +25,7 @@ import java.util.List;
 
 
 public class WafIntentService extends IntentService {
-    private SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     private Uri notificationUrl = Uri.parse("android.resource://" + MainActivity.PACKAGE_NAME + "/" + R.raw.notification);
 
     public static final String ACTION_UPDATE="com.wafwaf.wafwaf.UPDATE";

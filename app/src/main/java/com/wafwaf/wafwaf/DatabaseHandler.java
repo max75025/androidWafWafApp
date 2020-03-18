@@ -27,10 +27,10 @@ import java.util.List;
       String getApiKey(String name);
 
     public int getLastAttackTime(String accountName);
-     public boolean addAttack(String IP, String country, long startTime, long endTime,  String resultTypes, String accountName);
+     public boolean addAttack(String IP, String country, long startTime, long endTime, String resultTypes, String accountName);
     public List<Attack> getAllAttackByTime(long startTime);
     public List<Attack> getAllAccountAttack(String accountName);
-    public boolean deleteAttack( String accountName);
+    public boolean deleteAttack(String accountName);
 
     public int getLastAVTime(String accountName);
     public boolean addAV(long eventTime, String eventType, String fileName, String fileExt, String filePath, String suspicionType, String suspicionDescription, String AccountName);
@@ -121,7 +121,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
             Cursor cursor = db.rawQuery(query, null);
             if (cursor.moveToFirst()) {
                 do {
-                    Account account = new com.wafwaf.wafwaf.Model.Account();
+                    Account account = new Account();
                     account.setName( cursor.getString(0));
                     account.setApiKey( cursor.getString(1));
 

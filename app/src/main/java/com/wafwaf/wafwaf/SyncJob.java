@@ -32,7 +32,7 @@ public class SyncJob extends Job {
     @NonNull
     @Override
     protected Result onRunJob(@NonNull Params params) {
-        MainActivity.syncApiKeysWithFCM();
+        //MainActivity.syncApiKeysWithFCM();
         return Result.SUCCESS;
     }
 

@@ -26,4 +26,11 @@ public class UnixTime {
 
         return null;
     }
+    public static int getCurrentUnixTime() {
+        return (int) (System.currentTimeMillis() / 1000L);
+    }
+
+    public static int getUnixTimeDaysAgo(int daysCountAgo) {
+        return (int) (System.currentTimeMillis() / 1000L) - 60 * 60 * 24 * daysCountAgo;
+    }
 }

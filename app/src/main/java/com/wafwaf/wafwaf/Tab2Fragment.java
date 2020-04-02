@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.wafwaf.wafwaf.Adapter.RVAVAdapter;
 import com.wafwaf.wafwaf.Model.AV;
 import com.wafwaf.wafwaf.Model.Account;
+import com.wafwaf.wafwaf.util.UnixTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class Tab2Fragment extends Fragment implements MainActivity.SentDataToRVA
         DatabaseHandler db = new DatabaseHandler(getContext());
         if (MainActivity.accountList.size()!=0){
             //Account account = MainActivity.accountList.get(0);
-            av = db.getAllAVByTime(MainActivity.getUnixTimeDaysAgo(1));
+            av = db.getAllAVByTime(UnixTime.getUnixTimeDaysAgo(1));
         }
 
         rv = avView.findViewById(R.id.rvAV);

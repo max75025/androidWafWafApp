@@ -11,19 +11,20 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.media.AudioAttributes;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Debug;
 import android.os.StrictMode;
 import android.provider.Settings;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.customtabs.CustomTabsIntent;
-import android.support.design.internal.NavigationMenu;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -32,10 +33,10 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
 import android.text.SpannableString;
 import android.text.style.TextAppearanceSpan;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
@@ -55,11 +56,16 @@ import com.wafwaf.wafwaf.Manager.ProtectionSettingManager;
 import com.wafwaf.wafwaf.Model.AV;
 import com.wafwaf.wafwaf.Model.Account;
 import com.wafwaf.wafwaf.Model.Attack;
+import com.wafwaf.wafwaf.Model.Response;
 import com.wafwaf.wafwaf.util.CustomTabsHelper;
+import com.wafwaf.wafwaf.util.SnackbarHelper;
+import com.wafwaf.wafwaf.util.UnixTime;
+import com.wafwaf.wafwaf.util.Web;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -79,8 +85,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static String FCMtoken = null;
     static String accountName = null;
     static boolean allAccount = true;
+    View mainActivityView = null;
 
     private Context mContext;
+
+
+
+
 
     Menu menu;
 
@@ -112,6 +123,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onDialogDeleteAccountPositiveClick(android.support.v4.app.DialogFragment dialog) {
+        /*if (!isInternetAvailable()) {
+            Toast massage = Toast.makeText(this, getString(R.string.toast_error_ethernet_conn), Toast.LENGTH_LONG);
+            massage.show();
+            return;
+        }*/
         String apiKey = db.getApiKey(accountName);
         if (apiKey != null) {
             if (deleteFCMAccountOnServer(apiKey)) {
@@ -128,17 +144,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         } else {
             Log.e(TAG, "apiKey is null, not found on db");
+            Toast massage = Toast.makeText(this, getString(R.string.toast_oops), Toast.LENGTH_LONG);
+            massage.show();
         }
     }
 
     @Override
     public void onFinishAddSiteDialog(String name, String apiKey) {
+        registerOnPushServer(apiKey, FCMtoken, name);
+
+
+      /*  if (!isInternetAvailable()) {
+            Toast massage = Toast.makeText(this, getString(R.string.toast_error_ethernet_conn), Toast.LENGTH_LONG);
+            massage.show();
+            return;
+        }
+
         DatabaseHandler db = new DatabaseHandler(this);
         boolean result = sendApiKeyAndFCMtoken(apiKey);
         if (result) {
             result = db.addAccount(name, apiKey);
         } else {
-            Toast massage = Toast.makeText(this, getString(R.string.toast_error_ethernet_conn), Toast.LENGTH_LONG);
+            Toast massage = Toast.makeText(this, getString(R.string.toast_error_server_conn), Toast.LENGTH_LONG);
             massage.show();
             return;
         }
@@ -160,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             Toast massage = Toast.makeText(this, getString(R.string.toast_error_add_account), Toast.LENGTH_LONG);
             massage.show();
-        }
+        }*/
     }
 
 
@@ -173,12 +200,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (allAccount) {
 
                 if (update.equals(WafIntentService.UPDATE_ATTACK)) {
-                    List<Attack> attacks = db.getAllAttackByTime(getUnixTimeDaysAgo(1));
+                    List<Attack> attacks = db.getAllAttackByTime(UnixTime.getUnixTimeDaysAgo(1));
                     sentDataToRVAttackAdapter.setData(attacks);
                     tabBaged(tabAttack, "", true);
                 }
                 if (update.equals(WafIntentService.UPDATE_AV)) {
-                    List<AV> avs = db.getAllAVByTime(getUnixTimeDaysAgo(1));
+                    List<AV> avs = db.getAllAVByTime(UnixTime.getUnixTimeDaysAgo(1));
                     sentDataToRVAVAdapter.setData(avs);
                     tabBaged(tabAV, "", true);
                 }
@@ -215,6 +242,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         getFCMToken();
         PACKAGE_NAME = getApplicationContext().getPackageName();
@@ -305,7 +333,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         sentDataToRVAVAdapter = tab2Fragment;
         tbAdapter.addFragment(tab1Fragment, getString(R.string.tab1_fragment_name));
         tbAdapter.addFragment(tab2Fragment, getString(R.string.tab2_fragment_name));
-        /*adapter.addFragment(new Tab3Fragment(), "Tab 3");*/
         viewPager.setAdapter(tbAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
@@ -430,6 +457,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //syncApiKeysWithFCM();
 
         getAllowInSetting(this);
+
+        showDebugWindow(this);
+
+        mainActivityView = navigationView;
+        //Snackbar.make(view, "hello world", Snackbar.LENGTH_LONG).show();
+        //SnackbarHelper.showSnackbar(view, "hello world", Snackbar.LENGTH_LONG, R.color.colorWhite, R.color.colorAccentDark);
 
     }
 
@@ -579,8 +612,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             showOptionMenu(false);
             List<Attack> attacks = new ArrayList<>();
             List<AV> avs = new ArrayList<>();
-            attacks = db.getAllAttackByTime(getUnixTimeDaysAgo(1));
-            avs = db.getAllAVByTime(getUnixTimeDaysAgo(1));
+            attacks = db.getAllAttackByTime(UnixTime.getUnixTimeDaysAgo(1));
+            avs = db.getAllAVByTime(UnixTime.getUnixTimeDaysAgo(1));
 
             sentDataToRVAttackAdapter.setData(attacks);
             sentDataToRVAVAdapter.setData(avs);
@@ -629,6 +662,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             wafIntentService = new Intent(this, WafIntentService.class);
             startService(wafIntentService);
         }
+
     }
 
     @Override
@@ -657,18 +691,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    public static int getCurrentUnixTime() {
-        return (int) (System.currentTimeMillis() / 1000L);
-    }
 
-    public static int getUnixTimeDaysAgo(int daysCountAgo) {
-        return (int) (System.currentTimeMillis() / 1000L) - 60 * 60 * 24 * daysCountAgo;
-    }
+
+
 
     public static String getAndroidVersion() {
         String release = Build.VERSION.RELEASE;
         int sdkVersion = Build.VERSION.SDK_INT;
-        return "Android SDK: " + sdkVersion + " (" + release + ")";
+        return "Android  " +release  + " (SDK:" + sdkVersion + ")";
     }
 
     public static void getFCMToken() {
@@ -692,6 +722,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         //Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 
 
+
+
                     }
                 });
 
@@ -699,8 +731,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public static boolean sendApiKeyAndFCMtoken(String apiKey) {
         Log.d(TAG, "sendApiKeyAndFCMtoken: start");
-       /* String stringUrl = "http://91.194.79.90:1313/addNewFCM/";*/
-        String stringUrl = "http://r.2waf.com:1313/addNewFCM/";
+
+        String stringUrl = "http://r.2waf.com:8877/addNewFCM/";
+        //final String stringUrl = Resources.getSystem().getString(R.string.link_add_fcm);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                 .permitAll().build();
@@ -734,7 +767,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             wr.flush();
 
             // Get the server response
-
             reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
             String answer = "";
@@ -757,8 +789,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public static boolean deleteFCMAccountOnServer(String apiKey) {
         //Log.d(TAG, "sendApiKeyAndFCMtoken: start");
-        /*String stringUrl = "http://91.194.79.90:1313/deleteFCM/";*/
-        String stringUrl = "http://r.2waf.com:1313/deleteFCM/";
+        String stringUrl = "http://r.2waf.com:8877/deleteFCM/";
+        //final String stringUrl = Resources.getSystem().getString(R.string.link_delete_fcm);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                 .permitAll().build();
@@ -809,9 +841,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public static void syncApiKeysWithFCM() {
         // final String json = new Gson().toJson(accountList);
-        /*final String stringUrl = "http://91.194.79.90:1313/syncFCM/";*/
-       /* final String stringUrl = Resources.getSystem().getString(R.string.link_sync_fcm);*/
-        final String stringUrl = "http://r.2waf.com:1313/syncFCM/";
+        //final String stringUrl = Resources.getSystem().getString(R.string.link_sync_fcm);
+        final String stringUrl = "http://r.2waf.com:8877/syncFCM/";
 
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
@@ -825,7 +856,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                         // Get new Instance ID token
                         String token = task.getResult().getToken();
-                        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                        /*StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                                 .permitAll().build();
                         StrictMode.setThreadPolicy(policy);
                         try {
@@ -852,7 +883,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         } catch (Exception ex) {
                             ex.printStackTrace();
 
-                        }
+                        }*/
 
                     }
                 });
@@ -969,5 +1000,237 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
     }
+
+    /*public boolean isInternetAvailable(){
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                .permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        *//*try {
+            InetAddress ipAddr = InetAddress.getByName("google.com");
+            Log.d(TAG, "checkInternetConnection:" + ipAddr);
+            return !ipAddr.equals("");
+
+        } catch (Exception e) {
+            Log.d(TAG, "checkInternetConnection: error" + e );
+            return false;
+        }*//*
+
+        try {
+            URL url = new URL(getString(R.string.link_home));
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(true);
+            conn.setConnectTimeout(500);
+            return conn.getResponseCode() == HttpURLConnection.HTTP_OK;
+
+        } catch (Exception e){
+            Log.d(TAG, "checkInternetConnection: error" + e );
+            return false;
+        }
+    }*/
+
+    private static String getDeviceName() {
+        String manufacturer = Build.MANUFACTURER;
+        String model = Build.MODEL;
+        if (model.startsWith(manufacturer)) {
+            return model;
+        } else {
+            return manufacturer + " " + model + " ("+ android.os.Build.PRODUCT + ")";
+        }
+    }
+
+    private void showDebugWindow(final Context context) {
+
+        class DebugTask extends AsyncTask<Void, Void, Void> {
+            private String message;
+
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                while(FCMtoken ==null){}
+
+                String androidVersion = getAndroidVersion();
+
+                String wafCode,testAdd,testDelete;
+                String testApiKey = "170ecd95a094a7c03a5a7bc20a173afd17c0e015db18ccbbc05395f271d979f459e1120fcab10e6cc290a1b77a9aae7236e3277dcd0393a40c0aa0398696ed8c";
+
+                if (sendApiKeyAndFCMtoken(testApiKey)){
+                    testAdd = "success";
+                }else{
+                    testAdd = "error";
+                }
+
+                if (deleteFCMAccountOnServer(testApiKey)){
+                    testDelete = "success";
+                }else{
+                    testDelete = "error";
+                }
+
+
+
+                try {
+                    URL url = new URL(getString(R.string.link_home));
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    wafCode = String.valueOf(connection.getResponseCode() );
+
+                } catch (Exception e){
+                    wafCode = "error";
+                }
+
+                 message = "hardware model: " +getDeviceName() + "\n" +
+                        "android: " + androidVersion + "\n" +
+                        "2waf conn. code: " + wafCode + "\n" +
+                        "test request add: " + testAdd + "\n" +
+                        "test request delete: " + testDelete + "\n" ;
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void result) {
+                super.onPostExecute(result);
+                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.AlertDialogStyle))
+                        .setTitle("debug info")
+                        .setMessage(message)
+                        .setCancelable(true)
+                        .setNegativeButton(R.string.positive_button,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                AlertDialog alert = builder.create();
+
+                alert.show();
+            }
+        }
+
+        DebugTask dbTask = new DebugTask();
+        dbTask.execute();
+
+
+    }
+
+   private void registerOnPushServer(String apiKey, String FCMtoken, String name) {
+
+        class  regNewSite extends AsyncTask<Void, Void, Response> {
+            private String apiKey, token, name;
+
+
+            public regNewSite(String apiKey, String FCMtoken, String name){
+                super();
+                this.apiKey = apiKey;
+                this.token = FCMtoken;
+                this.name = name;
+            }
+
+            @Override
+            protected Response doInBackground(Void... voids) {
+                try {
+
+                    if ( !Web.isInternetAvailable(getResources().getString(R.string.link_home))){
+                        System.out.println("i'm inside");
+                        return new Response(404,"err connection time out ");
+                    }
+
+
+                    String stringUrl = getResources().getString(R.string.link_add_fcm);
+
+
+                    // Create data variable for sent values to server
+
+                    String data = "&" + URLEncoder.encode("ApiKey", "UTF-8") + "="
+                            + URLEncoder.encode(apiKey, "UTF-8");
+
+                    data += "&" + URLEncoder.encode("FCMtoken", "UTF-8")
+                            + "=" + URLEncoder.encode(token, "UTF-8");
+
+
+                    // Defined URL  where to send data
+
+                    return Web.postRequest(stringUrl, data);
+                } catch (Exception e){
+                    return new Response(0,e.getMessage() );
+
+                }
+
+            }
+
+            @Override
+            protected void onPostExecute(Response response) {
+                super.onPostExecute(response);
+
+                if (response.StatusCode == 404) {
+                    /*Toast massage = Toast.makeText(mContext, getString(R.string.toast_error_ethernet_conn), Toast.LENGTH_LONG);
+                    massage.show();*/
+                    SnackbarHelper.showSnackbar(
+                                                mainActivityView,
+                                                getString(R.string.toast_error_ethernet_conn),
+                                                Snackbar.LENGTH_LONG,
+                                                R.color.colorWhite,
+                                                R.color.colorAttention );
+                    return;
+                }
+
+                DatabaseHandler db = new DatabaseHandler(mContext);
+                boolean result = response.StatusCode == 200;
+                if (result) {
+                    result = db.addAccount(name, apiKey);
+                } else {
+                    //Toast massage = Toast.makeText(this, getString(R.string.toast_error_server_conn), Toast.LENGTH_LONG);
+                    //massage.show();
+                    SnackbarHelper.showSnackbar(
+                            mainActivityView,
+                            getString(R.string.toast_error_server_conn),
+                            Snackbar.LENGTH_LONG,
+                            R.color.colorWhite,
+                            R.color.colorAttention );
+                    return;
+                }
+                //System.out.println(result);
+                if (result) {
+                    accountList.add(new Account(name, apiKey));
+                    NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+                    Menu menu = navigationView.getMenu();
+                    SubMenu smenu = menu.findItem(R.id.site_list_item).getSubMenu();
+                    smenu.add(R.id.site_list, 1, 0, name);
+
+                    //change text in view
+                    //TextView emptyAttack = findViewById(R.id.empty_attack_text);
+                    //TextView emptyAV = findViewById(R.id.empty_av_text);
+                    //emptyAttack.setText(R.string.empty_attack_string);
+                    //emptyAV.setText(R.string.empty_av_string);
+
+
+                } else {
+                    //Toast massage = Toast.makeText(this, getString(R.string.toast_error_add_account), Toast.LENGTH_LONG);
+                    //massage.show();
+                    SnackbarHelper.showSnackbar(
+                            mainActivityView,
+                            getString(R.string.toast_error_add_account),
+                            Snackbar.LENGTH_LONG,
+                            R.color.colorWhite,
+                            R.color.colorAttention );
+                    return;
+                }
+
+
+                SnackbarHelper.showSnackbar(
+                        mainActivityView,
+                        getString(R.string.toast_site_success_add),
+                        Snackbar.LENGTH_SHORT,
+                        R.color.colorWhite,
+                        R.color.colorAccentDark );
+            }
+        }
+
+        new regNewSite(apiKey, FCMtoken, name).execute();
+    }
+
+
 }
 

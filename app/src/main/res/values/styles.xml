@@ -1,10 +1,20 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="AppTheme.Launcher">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <!-- для Android 5+ вы можете поменять цвет colorPrimaryDark, чтобы соответствовать цвету windowBackground -->
+        <!-- <item name="colorPrimaryDark">@android:color/white</item> -->
+    </style>
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
 
         <item name="colorPrimaryDark">@color/colorAccentDark</item>
+
+        <item name="android:statusBarColor" tools:targetApi="21">@color/colorMainGrey</item>
+        <item name="android:navigationBarColor" tools:targetApi="21">@color/colorBackgroundGrey</item>
+
         <item name="drawerArrowStyle">@style/hamburgerIconTheme</item>
 
         <item name="android:popupMenuStyle">@style/PopupMenuStyle</item>

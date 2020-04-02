@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.wafwaf.wafwaf.Adapter.RVAttackAdapter;
 import com.wafwaf.wafwaf.Model.Attack;
+import com.wafwaf.wafwaf.util.UnixTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,7 @@ public class Tab1Fragment extends Fragment implements MainActivity.SentDataToRVA
 
        DatabaseHandler db = new DatabaseHandler(getContext());
        if (MainActivity.accountList.size()!=0){
-           attacks = db.getAllAttackByTime(MainActivity.getUnixTimeDaysAgo(1));
+           attacks = db.getAllAttackByTime(UnixTime.getUnixTimeDaysAgo(1));
        }
 
 

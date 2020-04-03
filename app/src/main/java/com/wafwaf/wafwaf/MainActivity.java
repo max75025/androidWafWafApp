@@ -90,9 +90,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Context mContext;
 
 
-
-
-
     Menu menu;
 
     SharedPreferences prefs = null;
@@ -128,7 +125,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             massage.show();
             return;
         }*/
+
         String apiKey = db.getApiKey(accountName);
+        if (apiKey != null) {
+            deleterFromPushServer(apiKey, FCMtoken, accountName);
+        }else {
+            SnackbarHelper.showSnackbar(
+                    mainActivityView,
+                    getString(R.string.toast_error_delete_account),
+                    Snackbar.LENGTH_LONG,
+                    R.color.colorWhite,
+                    R.color.colorAttention);
+        }
+        /*String apiKey = db.getApiKey(accountName);
         if (apiKey != null) {
             if (deleteFCMAccountOnServer(apiKey)) {
                 db.deleteAccount(accountName);
@@ -146,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Log.e(TAG, "apiKey is null, not found on db");
             Toast massage = Toast.makeText(this, getString(R.string.toast_oops), Toast.LENGTH_LONG);
             massage.show();
-        }
+        }*/
     }
 
     @Override
@@ -327,7 +336,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         Tab1Fragment tab1Fragment = new Tab1Fragment();
-        sentDataToRVAttackAdapter =  tab1Fragment;
+        sentDataToRVAttackAdapter = tab1Fragment;
 
         Tab2Fragment tab2Fragment = new Tab2Fragment();
         sentDataToRVAVAdapter = tab2Fragment;
@@ -335,7 +344,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         tbAdapter.addFragment(tab2Fragment, getString(R.string.tab2_fragment_name));
         viewPager.setAdapter(tbAdapter);
         tabLayout.setupWithViewPager(viewPager);
-
 
 
         //устанавливаем customView для табов чтоб можно было отобразить красную точку
@@ -374,7 +382,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         Menu menu = navigationView.getMenu();
-        MenuItem sm= menu.findItem(R.id.site_list_item);
+        MenuItem sm = menu.findItem(R.id.site_list_item);
         SpannableString s = new SpannableString(sm.getTitle());
         s.setSpan(new TextAppearanceSpan(this, R.style.SubMenuTextStyle), 0, s.length(), 0);
         sm.setTitle(s);
@@ -393,7 +401,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         menu.findItem(R.id.nav_all_site).setChecked(true);
         allAccount = true;
 
-        if (accountList.size()==0) {
+        if (accountList.size() == 0) {
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             DialogFragment addDialog = new AddNewSiteDialogFragment();
             addDialog.show(ft, "addSiteDialog");
@@ -406,8 +414,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             emptyAttack.setText(R.string.empty_account);
             emptyAV.setText(R.string.empty_account);*/
         }
-
-
 
 
         Button siteButton = navigationView.findViewById(R.id.site_button);
@@ -576,8 +582,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -647,7 +651,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
 
-        DrawerLayout drawer =  findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -691,14 +695,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-
-
-
-
     public static String getAndroidVersion() {
         String release = Build.VERSION.RELEASE;
         int sdkVersion = Build.VERSION.SDK_INT;
-        return "Android  " +release  + " (SDK:" + sdkVersion + ")";
+        return "Android  " + release + " (SDK:" + sdkVersion + ")";
     }
 
     public static void getFCMToken() {
@@ -720,8 +720,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         Log.d(TAG, msg);
                         System.out.println("FCM token: " + FCMtoken);
                         //Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-
-
 
 
                     }
@@ -1001,32 +999,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    /*public boolean isInternetAvailable(){
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-                .permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        *//*try {
-            InetAddress ipAddr = InetAddress.getByName("google.com");
-            Log.d(TAG, "checkInternetConnection:" + ipAddr);
-            return !ipAddr.equals("");
-
-        } catch (Exception e) {
-            Log.d(TAG, "checkInternetConnection: error" + e );
-            return false;
-        }*//*
-
-        try {
-            URL url = new URL(getString(R.string.link_home));
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setDoOutput(true);
-            conn.setConnectTimeout(500);
-            return conn.getResponseCode() == HttpURLConnection.HTTP_OK;
-
-        } catch (Exception e){
-            Log.d(TAG, "checkInternetConnection: error" + e );
-            return false;
-        }
-    }*/
 
     private static String getDeviceName() {
         String manufacturer = Build.MANUFACTURER;
@@ -1034,7 +1006,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (model.startsWith(manufacturer)) {
             return model;
         } else {
-            return manufacturer + " " + model + " ("+ android.os.Build.PRODUCT + ")";
+            return manufacturer + " " + model + " (" + android.os.Build.PRODUCT + ")";
         }
     }
 
@@ -1051,41 +1023,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             protected Void doInBackground(Void... params) {
-                while(FCMtoken ==null){}
+                while (FCMtoken == null) {
+                }
 
                 String androidVersion = getAndroidVersion();
 
-                String wafCode,testAdd,testDelete;
+                String wafCode, testAdd, testDelete;
                 String testApiKey = "170ecd95a094a7c03a5a7bc20a173afd17c0e015db18ccbbc05395f271d979f459e1120fcab10e6cc290a1b77a9aae7236e3277dcd0393a40c0aa0398696ed8c";
 
-                if (sendApiKeyAndFCMtoken(testApiKey)){
+                if (sendApiKeyAndFCMtoken(testApiKey)) {
                     testAdd = "success";
-                }else{
+                } else {
                     testAdd = "error";
                 }
 
-                if (deleteFCMAccountOnServer(testApiKey)){
+                if (deleteFCMAccountOnServer(testApiKey)) {
                     testDelete = "success";
-                }else{
+                } else {
                     testDelete = "error";
                 }
-
 
 
                 try {
                     URL url = new URL(getString(R.string.link_home));
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                    wafCode = String.valueOf(connection.getResponseCode() );
+                    wafCode = String.valueOf(connection.getResponseCode());
 
-                } catch (Exception e){
+                } catch (Exception e) {
                     wafCode = "error";
                 }
 
-                 message = "hardware model: " +getDeviceName() + "\n" +
+                message = "hardware model: " + getDeviceName() + "\n" +
                         "android: " + androidVersion + "\n" +
                         "2waf conn. code: " + wafCode + "\n" +
                         "test request add: " + testAdd + "\n" +
-                        "test request delete: " + testDelete + "\n" ;
+                        "test request delete: " + testDelete + "\n";
                 return null;
             }
 
@@ -1115,13 +1087,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-   private void registerOnPushServer(String apiKey, String FCMtoken, String name) {
+    private void registerOnPushServer(String apiKey, String FCMtoken, String name) {
 
-        class  regNewSite extends AsyncTask<Void, Void, Response> {
+        class regNewSite extends AsyncTask<Void, Void, Response> {
             private String apiKey, token, name;
 
 
-            public regNewSite(String apiKey, String FCMtoken, String name){
+            public regNewSite(String apiKey, String FCMtoken, String name) {
                 super();
                 this.apiKey = apiKey;
                 this.token = FCMtoken;
@@ -1132,9 +1104,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             protected Response doInBackground(Void... voids) {
                 try {
 
-                    if ( !Web.isInternetAvailable(getResources().getString(R.string.link_home))){
+                    if (!Web.isInternetAvailable(getResources().getString(R.string.link_home))) {
                         System.out.println("i'm inside");
-                        return new Response(404,"err connection time out ");
+                        return new Response(404, "err connection time out ");
                     }
 
 
@@ -1142,19 +1114,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
                     // Create data variable for sent values to server
-
                     String data = "&" + URLEncoder.encode("ApiKey", "UTF-8") + "="
                             + URLEncoder.encode(apiKey, "UTF-8");
 
                     data += "&" + URLEncoder.encode("FCMtoken", "UTF-8")
                             + "=" + URLEncoder.encode(token, "UTF-8");
 
-
-                    // Defined URL  where to send data
-
                     return Web.postRequest(stringUrl, data);
-                } catch (Exception e){
-                    return new Response(0,e.getMessage() );
+                } catch (Exception e) {
+                    return new Response(0, e.getMessage());
 
                 }
 
@@ -1165,14 +1133,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 super.onPostExecute(response);
 
                 if (response.StatusCode == 404) {
-                    /*Toast massage = Toast.makeText(mContext, getString(R.string.toast_error_ethernet_conn), Toast.LENGTH_LONG);
-                    massage.show();*/
                     SnackbarHelper.showSnackbar(
-                                                mainActivityView,
-                                                getString(R.string.toast_error_ethernet_conn),
-                                                Snackbar.LENGTH_LONG,
-                                                R.color.colorWhite,
-                                                R.color.colorAttention );
+                            mainActivityView,
+                            getString(R.string.toast_error_ethernet_conn),
+                            Snackbar.LENGTH_LONG,
+                            R.color.colorWhite,
+                            R.color.colorAttention);
                     return;
                 }
 
@@ -1181,17 +1147,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (result) {
                     result = db.addAccount(name, apiKey);
                 } else {
-                    //Toast massage = Toast.makeText(this, getString(R.string.toast_error_server_conn), Toast.LENGTH_LONG);
-                    //massage.show();
+
                     SnackbarHelper.showSnackbar(
                             mainActivityView,
                             getString(R.string.toast_error_server_conn),
                             Snackbar.LENGTH_LONG,
                             R.color.colorWhite,
-                            R.color.colorAttention );
+                            R.color.colorAttention);
                     return;
                 }
-                //System.out.println(result);
+
                 if (result) {
                     accountList.add(new Account(name, apiKey));
                     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -1199,22 +1164,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     SubMenu smenu = menu.findItem(R.id.site_list_item).getSubMenu();
                     smenu.add(R.id.site_list, 1, 0, name);
 
-                    //change text in view
-                    //TextView emptyAttack = findViewById(R.id.empty_attack_text);
-                    //TextView emptyAV = findViewById(R.id.empty_av_text);
-                    //emptyAttack.setText(R.string.empty_attack_string);
-                    //emptyAV.setText(R.string.empty_av_string);
-
-
                 } else {
-                    //Toast massage = Toast.makeText(this, getString(R.string.toast_error_add_account), Toast.LENGTH_LONG);
-                    //massage.show();
                     SnackbarHelper.showSnackbar(
                             mainActivityView,
                             getString(R.string.toast_error_add_account),
                             Snackbar.LENGTH_LONG,
                             R.color.colorWhite,
-                            R.color.colorAttention );
+                            R.color.colorAttention);
                     return;
                 }
 
@@ -1224,11 +1180,98 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         getString(R.string.toast_site_success_add),
                         Snackbar.LENGTH_SHORT,
                         R.color.colorWhite,
-                        R.color.colorAccentDark );
+                        R.color.colorAccentDark);
             }
         }
 
         new regNewSite(apiKey, FCMtoken, name).execute();
+    }
+
+
+    private void deleterFromPushServer(String apiKey, String FCMtoken, String accountName) {
+
+        class deleteSite extends AsyncTask<Void, Void, Response> {
+            private String apiKey, token, name;
+
+
+            public deleteSite(String apiKey, String FCMtoken, String AccountName) {
+                super();
+                this.apiKey = apiKey;
+                this.token = FCMtoken;
+                this.name = AccountName;
+            }
+
+            @Override
+            protected Response doInBackground(Void... voids) {
+                try {
+
+                    if (!Web.isInternetAvailable(getResources().getString(R.string.link_home))) {
+                        System.out.println("i'm inside");
+                        return new Response(404, "err connection time out ");
+                    }
+
+
+                    String stringUrl = getResources().getString(R.string.link_delete_fcm);
+
+
+                    // Create data variable for sent values to server
+                    String data = "&" + URLEncoder.encode("ApiKey", "UTF-8") + "="
+                            + URLEncoder.encode(apiKey, "UTF-8");
+
+                    data += "&" + URLEncoder.encode("FCMtoken", "UTF-8")
+                            + "=" + URLEncoder.encode(token, "UTF-8");
+
+                    return Web.postRequest(stringUrl, data);
+                } catch (Exception e) {
+                    return new Response(0, e.getMessage());
+
+                }
+
+
+            }
+
+            @Override
+            protected void onPostExecute(Response response) {
+                super.onPostExecute(response);
+
+                if (response.StatusCode == 404) {
+                    SnackbarHelper.showSnackbar(
+                            mainActivityView,
+                            getString(R.string.toast_error_ethernet_conn),
+                            Snackbar.LENGTH_LONG,
+                            R.color.colorWhite,
+                            R.color.colorAttention);
+                    return;
+                }
+
+
+                if (response.StatusCode == 200) {
+                    db.deleteAccount(name);
+                    db.deleteAttack(name);
+                    db.deleteAV(name);
+                    Intent intent = getIntent();
+                    finish();
+                    startActivity(intent);
+                } else {
+                    SnackbarHelper.showSnackbar(
+                            mainActivityView,
+                            getString(R.string.toast_error_server_conn),
+                            Snackbar.LENGTH_LONG,
+                            R.color.colorWhite,
+                            R.color.colorAttention);
+                    return;
+                }
+
+                SnackbarHelper.showSnackbar(
+                        mainActivityView,
+                        getString(R.string.toast_site_success_delete),
+                        Snackbar.LENGTH_SHORT,
+                        R.color.colorWhite,
+                        R.color.colorAccentDark);
+            }
+        }
+
+        new deleteSite(apiKey, FCMtoken, accountName).execute();
     }
 
 

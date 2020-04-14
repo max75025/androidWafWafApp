@@ -34,6 +34,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
 import android.text.style.TextAppearanceSpan;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
@@ -41,7 +42,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -129,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String apiKey = db.getApiKey(accountName);
         if (apiKey != null) {
             deleterFromPushServer(apiKey, FCMtoken, accountName);
-        }else {
+        } else {
             SnackbarHelper.showSnackbar(
                     mainActivityView,
                     getString(R.string.toast_error_delete_account),
@@ -285,40 +289,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         }
-        //region old code
-        //jobManager for check in background
-        //JobManager.create(this).addJobCreator(new SyncJobCreator());
-        //SyncJob.schedulePeriodic();
 
-
-        //white list for android DOZE
-        /*if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            System.out.println("battery srt");
-           Intent intent = new Intent();
-            String packageName = getPackageName();
-            android.os.PowerManager pm = (android.os.PowerManager) getSystemService(POWER_SERVICE);
-            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
-                intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-                intent.setData(Uri.parse("package:" + packageName));
-                startActivity(intent);
-            }
-
-           *//* if (!pm.isIgnoringBatteryOptimizations(packageName)) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("важно")
-                    .setMessage("добавьте приложение в белый лист для DOZE это поможет доставлять оповещение вовремя")
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent i = new Intent();
-                            i.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
-                            startActivity(i);
-                        }
-                    })
-                    .show();
-            }*//*
-
-        }*/
-        //endregion
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -353,7 +324,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         tabAttack.setCustomView(R.layout.baged_tab);
         tabAV.setCustomView(R.layout.baged_tab);
-        //tabBaged(tabAttack, "", true);
 
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -393,7 +363,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             for (Account account : accountList) {
                 smenu.add(R.id.site_list, 1, 0, account.getName());
             }
-            //accountName = accountList.get(0).name;
         }
 
 
@@ -401,19 +370,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         menu.findItem(R.id.nav_all_site).setChecked(true);
         allAccount = true;
 
-        if (accountList.size() == 0) {
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            DialogFragment addDialog = new AddNewSiteDialogFragment();
-            addDialog.show(ft, "addSiteDialog");
 
-            //change text in view to "account empty"
-            //tab1Fragment.setEmptyText(R.string.em);
-
-            /*TextView emptyAttack = (TextView) findViewById(R.id.empty_attack_text);
-            TextView emptyAV =  (TextView) findViewById(R.id.empty_av_text);
-            emptyAttack.setText(R.string.empty_account);
-            emptyAV.setText(R.string.empty_account);*/
-        }
 
 
         Button siteButton = navigationView.findViewById(R.id.site_button);
@@ -438,12 +395,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
-        /*if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            startForegroundService(new Intent(this,WafIntentService.class));
-        }else {
-            startService(new Intent(this, WafIntentService.class));
-        }*/
-
         wafIntentService = new Intent(this, WafIntentService.class);
         startService(new Intent(this, WafIntentService.class));
 
@@ -464,12 +415,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         getAllowInSetting(this);
 
-        showDebugWindow(this);
+        //showDebugWindow(this);
 
         mainActivityView = navigationView;
         //Snackbar.make(view, "hello world", Snackbar.LENGTH_LONG).show();
         //SnackbarHelper.showSnackbar(view, "hello world", Snackbar.LENGTH_LONG, R.color.colorWhite, R.color.colorAccentDark);
 
+
+
+        if (prefs.getBoolean("firstRun", true)) {
+            showLicenseAgreement();
+        }else {
+            if (accountList.size() == 0) {
+                showAddSiteDialog();
+            }
+        }
+
+    }
+
+    private void showAddSiteDialog(){
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        DialogFragment addDialog = new AddNewSiteDialogFragment();
+        addDialog.show(ft, "addSiteDialog");
     }
 
 
@@ -489,10 +456,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    /*@Override
-    public void onItemClick(View view, int position) {
-        Toast.makeText(this, "you clicked" + rvAttackAdapter.getItem(position) + "on row number" + position ,Toast.LENGTH_SHORT).show();
-    }*/
+
 
 
     @Override
@@ -915,6 +879,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 v.setVisibility(View.INVISIBLE);
             }
         }
+    }
+
+
+    private void showLicenseAgreement() {
+        //if (prefs.getBoolean("firstrun", true)) {
+            final TextView message = new TextView(mContext);
+            message.setText(R.string.license_text);
+            message.setTextColor(getResources().getColor(R.color.colorWhite));
+            FrameLayout.LayoutParams params = new  FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.leftMargin = getResources().getDimensionPixelSize(R.dimen.dialog_margin);
+            message.setLayoutParams(params);
+            message.setMovementMethod(LinkMovementMethod.getInstance());
+            FrameLayout container = new FrameLayout(mContext);
+            container.addView(message);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialogStyle);
+            builder.setTitle(R.string.license_title)
+                    //.setMessage(R.string.license_text)
+                    .setIcon(R.drawable.ic_notification_icon_v2)
+                    .setView(container)
+                    .setCancelable(false)
+                    .setNegativeButton(R.string.positive_button,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                    showAddSiteDialog();
+                                }
+                            });
+
+            AlertDialog alert = builder.create();
+            alert.show();
+        //}
+       prefs.edit().putBoolean("firstRun", false).apply();
+
     }
 
     private void attentionAboutProblem(String[] problemOSVersion) {

@@ -1,7 +1,7 @@
 package com.wafwaf.wafwaf.Adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,14 +10,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.wafwaf.wafwaf.Model.Attack;
 import com.wafwaf.wafwaf.DatabaseHandler;
 import com.wafwaf.wafwaf.Manager.AttackRawLogsManager;
 import com.wafwaf.wafwaf.Manager.IpInfoManager;
 import com.wafwaf.wafwaf.R;
-import com.wafwaf.wafwaf.util.UnixTime;
 
 import java.util.List;
 

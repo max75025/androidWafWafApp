@@ -7,10 +7,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
-import android.support.v7.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 
 import com.wafwaf.wafwaf.BuildConfig;
-import com.wafwaf.wafwaf.MainActivity;
 import com.wafwaf.wafwaf.R;
 
 public class JumpPermissionManagement {

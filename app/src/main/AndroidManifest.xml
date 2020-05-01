@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.wafwaf.wafwaf"
+    package="com.app2waf"
     android:versionName="@string/version">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -20,7 +20,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.app2waf.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
@@ -44,7 +44,7 @@
 
 
         <service
-            android:name=".WafIntentService"
+            android:name="com.app2waf.WafIntentService"
             android:exported="false" /> <!-- part for JobWork -->
         <service
             android:name="com.evernote.android.job.v21.PlatformJobService"
@@ -75,7 +75,7 @@
             android:permission="android.permission.BIND_JOB_SERVICE" /> <!-- end part for Job Work -->
         <!-- [START firebase_service] -->
         <service
-            android:name=".FbMessagingService"
+            android:name="com.app2waf.FbMessagingService"
             android:enabled="true"
             android:exported="true"
             android:stopWithTask="false">
@@ -84,7 +84,7 @@
             </intent-filter>
         </service>
         <service
-            android:name=".FbJobService"
+            android:name="com.app2waf.FbJobService"
             android:enabled="true"
             android:exported="true"
             android:stopWithTask="false">
@@ -109,8 +109,8 @@
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/attention_channel_id" />
 
-        <activity android:name=".WebViewActivity" />
-        <activity android:name=".RawLogsActivity"/>
+        <activity android:name="com.app2waf.WebViewActivity" />
+        <activity android:name="com.app2waf.RawLogsActivity"/>
     </application>
 
 </manifest>

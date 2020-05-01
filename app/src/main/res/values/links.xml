@@ -2,7 +2,7 @@
     <string name="link_home">https://2waf.com</string>
     <string name="link_panel">https://2waf.com/panel</string>
     <string name="link_tawk_chat">https://tawk.to/chat/5b09db7410b99c7b36d45674/default</string>
-    <string name="link_telegram">https://t.me/wafwaftech</string>
+    <string name="link_telegram">https://t.me/ceo2waf</string>
     <string name="link_sync_fcm">http://r.2waf.com:8877/syncFCM/</string>
     <string name="link_add_fcm">http://r.2waf.com:8877/addNewFCM/</string>
     <string name="link_delete_fcm">http://r.2waf.com:8877/deleteFCM/</string>

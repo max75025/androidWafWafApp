@@ -2,7 +2,7 @@
     <string name="app_name">2WAF</string>
     <string name="toolbar_header"><font fgcolor='#469781'>2</font>WAF</string>
 
-    <string name="version">0.60 rc</string>
+    <string name="version">0.60.2</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

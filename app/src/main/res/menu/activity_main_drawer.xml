@@ -10,6 +10,11 @@
             android:title="@string/add_site"
             android:checkable="false"/>
         <item
+            android:id="@+id/nav_new_attack"
+            android:icon="@drawable/ic_24_hours"
+            android:title="@string/new_events"
+            />
+        <item
             android:id="@+id/nav_all_site"
             android:icon="@drawable/ic_24_hours"
             android:title="@string/recent"

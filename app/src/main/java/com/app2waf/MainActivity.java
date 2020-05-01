@@ -1084,6 +1084,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void registerOnPushServer(String apiKey, String FCMtoken, String name) {
+        final String REG_NEW_SITE_TAG = "RegNewSite";
 
         class regNewSite extends AsyncTask<Void, Void, Response> {
             private String apiKey, token, name;
@@ -1101,8 +1102,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 try {
 
                     if (!Web.isInternetAvailable(getResources().getString(R.string.link_home))) {
-                        System.out.println("i'm inside");
-                        return new Response(404, "err connection time out ");
+                        Log.d(REG_NEW_SITE_TAG, "connection to 2waf.com not available");
+                        return new Response(404, "err connection to 2waf.com not available ");
                     }
 
 
@@ -1143,7 +1144,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (result) {
                     result = db.addAccount(name, apiKey);
                 } else {
-
+                    Log.d(REG_NEW_SITE_TAG, "err result. StatusCode = " + response.StatusCode + response.Body);
                     SnackbarHelper.showSnackbar(
                             mainActivityView,
                             getString(R.string.toast_error_server_conn),
@@ -1161,6 +1162,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     smenu.add(R.id.site_list, 1, 0, name);
 
                 } else {
+
                     SnackbarHelper.showSnackbar(
                             mainActivityView,
                             getString(R.string.toast_error_add_account),

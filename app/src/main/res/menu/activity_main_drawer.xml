@@ -9,28 +9,28 @@
             android:icon="@drawable/ic_plus"
             android:title="@string/add_site"
             android:checkable="false"/>
-        <item
-            android:id="@+id/nav_new_attack"
-            android:icon="@drawable/ic_24_hours"
-            android:title="@string/new_events"
-            />
-        <item
-            android:id="@+id/nav_all_site"
-            android:icon="@drawable/ic_24_hours"
-            android:title="@string/recent"
-            />
-        <!--<item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />-->
+    <!--<item
+        android:id="@+id/nav_new_attack"
+        android:icon="@drawable/ic_24_hours"
+        android:title="@string/new_events"
+        />-->
+    <item
+        android:id="@+id/nav_all_site"
+        android:icon="@drawable/ic_24_hours"
+        android:title="@string/recent"
+        />
+    <!--<item
+        android:id="@+id/nav_gallery"
+        android:icon="@drawable/ic_menu_gallery"
+        android:title="Gallery" />
+    <item
+        android:id="@+id/nav_slideshow"
+        android:icon="@drawable/ic_menu_slideshow"
+        android:title="Slideshow" />
+    <item
+        android:id="@+id/nav_manage"
+        android:icon="@drawable/ic_menu_manage"
+        android:title="Tools" />-->
 </group>
 <item android:title="@string/site_submenu_header" android:id="@+id/site_list_item" >
         <menu>

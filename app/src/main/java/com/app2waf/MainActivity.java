@@ -1187,6 +1187,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     private void deleterFromPushServer(String apiKey, String FCMtoken, String accountName) {
+        final String DELETE_PUSH_TAG = "deleteFromPushServer";
 
         class deleteSite extends AsyncTask<Void, Void, Response> {
             private String apiKey, token, name;
@@ -1204,7 +1205,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 try {
 
                     if (!Web.isInternetAvailable(getResources().getString(R.string.link_home))) {
-                        System.out.println("i'm inside");
+                        Log.d(DELETE_PUSH_TAG, "err connection to 2waf.com");
                         return new Response(404, "err connection time out ");
                     }
 
@@ -1251,6 +1252,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     finish();
                     startActivity(intent);
                 } else {
+
+                    Log.d(DELETE_PUSH_TAG, response.Body);
                     SnackbarHelper.showSnackbar(
                             mainActivityView,
                             getString(R.string.toast_error_server_conn),

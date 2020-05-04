@@ -5,4 +5,22 @@
         <item name="windowNoTitle">true</item>
         <!--<item name="android:statusBarColor">@color/colorGreen</item>-->
     </style>
+
+
+
+
+    <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textColorPrimary">@color/colorWhite</item>
+        <!--<item name="android:textColorSecondary">@color/colorWhite</item>-->
+        <item name="android:background">@color/colorMainGrey</item>
+        <!--<item name="textColorAlertDialogListItem">@color/colorWhite</item>-->
+
+        <!--<item name="android:colorAccent"  tools:targetApi="21">@color/colorWhite</item>-->
+
+        <item name="android:windowBackground">@color/transparent</item>
+
+
+
+    </style>
 </resources>

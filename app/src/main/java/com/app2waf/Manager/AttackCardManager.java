@@ -104,7 +104,6 @@ public class AttackCardManager {
             sortAttackTemp eventTemp = sortMap.get(ev.IpAddr);
             if (eventTemp == null) {
                 eventTemp = new sortAttackTemp();
-                //eventTemp.TypeTrace = new HashMap<>();
                 eventTemp.ResultTypes = new HashMap<>();
             }
             eventTemp.Country = ev.Country;
@@ -116,16 +115,7 @@ public class AttackCardManager {
                 eventTemp.EndTime = ev.DataTime;
             }
 
-           /* for (String typeTrace:ev.TypeTrace){
 
-                Integer intTypeTrace = eventTemp.TypeTrace.get(typeTrace);
-                if( intTypeTrace == null){
-                    intTypeTrace = 1;
-                    eventTemp.TypeTrace.put(typeTrace,intTypeTrace);
-                }else{
-                    eventTemp.TypeTrace.put(typeTrace,intTypeTrace+1);
-                }
-            }*/
 
             for (String resultTypes:ev.ResultTypes){
                 Integer intRT = eventTemp.ResultTypes.get(resultTypes);
@@ -148,11 +138,6 @@ public class AttackCardManager {
             sortEvent.setCountry( entry.getValue().Country);
             sortEvent.setStartTime(entry.getValue().StartTime);
             sortEvent.setEndTime( entry.getValue().EndTime);
-            //String typeTraceString = "";
-            /*for( Map.Entry<String,Integer> entryTypeTrace: entry.getValue().TypeTrace.entrySet()){
-                typeTraceString += entryTypeTrace.getKey() + " ";
-            }
-            sortEvent.TypeTrace = typeTraceString +"; ";*/
             String resultTypesString = "";
             for( Map.Entry<String,Integer> entryResultTypes: entry.getValue().ResultTypes.entrySet()){
                 resultTypesString += entryResultTypes.getKey() + "["+String.valueOf(entryResultTypes.getValue())+"]; ";
@@ -172,7 +157,6 @@ public class AttackCardManager {
 class sortAttackTemp{
     long StartTime;
     long EndTime;
-    //HashMap<String,Integer> TypeTrace;
     HashMap<String,Integer> ResultTypes;
     String Country;
 

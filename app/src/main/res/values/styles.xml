@@ -1,10 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="AppTheme.Launcher">
-        <item name="android:windowBackground">@drawable/splash_screen</item>
-        <!-- для Android 5+ вы можете поменять цвет colorPrimaryDark, чтобы соответствовать цвету windowBackground -->
-        <!-- <item name="colorPrimaryDark">@android:color/white</item> -->
-    </style>
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -29,7 +24,11 @@
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark" />
+
+
+
+
 
     <style name="ToolbarHeaderStyle" parent="@style/Base.TextAppearance.AppCompat.Title">
         <item name="android:textSize">18sp</item>
@@ -64,8 +63,11 @@
 
 
 
+
+
     <style name="PopupMenuStyle" >
         <item name="android:popupBackground">@color/colorBackgroundGrey</item>
+
     </style>
 
 
@@ -75,13 +77,9 @@
         <item name="android:textColor">@color/colorWhite</item>
     </style>
 
-
-    <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:textColor">@color/colorWhite</item>
-        <item name="android:textColorPrimary">@color/colorWhite</item>
-        <item name="android:textColorSecondary">@color/colorWhite</item>
-        <item name="android:background">@color/colorMainGrey</item>
-        <item name="textColorAlertDialogListItem">@color/colorWhite</item>
+<!--style add site dialog for 4.4, for 5+ in file v21-->
+    <style name="AlertDialogStyle" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:windowBackground">@color/transparent</item>
     </style>
 
     <style name="AlertDeleteDialogStyle" parent="@style/AlertDialogStyle">

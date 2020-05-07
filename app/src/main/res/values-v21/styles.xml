@@ -9,16 +9,19 @@
 
 
 
-    <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="AlertDialogStyle" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:textColor">@color/colorWhite</item>
         <item name="android:textColorPrimary">@color/colorWhite</item>
         <!--<item name="android:textColorSecondary">@color/colorWhite</item>-->
         <item name="android:background">@color/colorMainGrey</item>
         <!--<item name="textColorAlertDialogListItem">@color/colorWhite</item>-->
 
-        <!--<item name="android:colorAccent"  tools:targetApi="21">@color/colorWhite</item>-->
+        <!--<item name="android:colorAccent"  >@color/colorWhite</item>-->
+        <!--<item name="android:textColorHighlight">@color/colorWhite</item>-->
 
         <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:popupMenuStyle">@style/PopupMenuStyle</item>
+        <item name="android:popupBackground">@color/transparent</item>
 
 
 

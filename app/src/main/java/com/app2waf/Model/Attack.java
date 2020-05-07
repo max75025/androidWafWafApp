@@ -22,7 +22,7 @@ public class Attack {
 
     public void setImgId(String types){
         if (types.indexOf(';')!=types.lastIndexOf(';')){
-            this.imgId = R.drawable.mixed_attack;
+            this.imgId = R.drawable.mixed_attack_color;
             return;
         }
         if (types.contains("clientside")){

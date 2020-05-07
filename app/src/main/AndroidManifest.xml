@@ -17,7 +17,8 @@
         android:resizeableActivity="false"
         android:roundIcon="@mipmap/ic_logo_v4_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        >
 
         <activity
             android:name="com.app2waf.MainActivity"

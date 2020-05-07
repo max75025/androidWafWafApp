@@ -44,6 +44,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -371,9 +373,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
-        Button siteButton = navigationView.findViewById(R.id.site_button);
+        /*Button siteButton = navigationView.findViewById(R.id.site_button);
         siteButton.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View v) {
+                openSite(getString(R.string.link_panel));
+            }
+        });*/
+
+
+        //вешаем слушателя на иконку и текст в шапке бокового меню
+        View ll = navigationView.getHeaderView(0);//get headerLayout
+
+        ImageView iv =  ll.findViewById(R.id.logo_in_side_menu);
+        TextView tv =  ll.findViewById(R.id.textview_nav_header);
+
+        iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openSite(getString(R.string.link_panel));
+            }
+        });
+
+        tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openSite(getString(R.string.link_panel));

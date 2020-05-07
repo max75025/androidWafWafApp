@@ -5,16 +5,20 @@ import android.content.Context;
 import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.app2waf.Model.AttackRawLogs;
 import com.app2waf.R;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -101,7 +105,16 @@ public class RawLogsAdapter extends RecyclerView.Adapter<RawLogsAdapter.RawLogsV
                 String sendData = rawLogsList.get(holder.getAdapterPosition()).getAttackTime() + "\n" +
                                   rawLogsList.get(holder.getAdapterPosition()).getAttackDirection() + "\n" +
                                   rawLogsList.get(holder.getAdapterPosition()).getAttackPackage();
-                sendIntent.putExtra(Intent.EXTRA_TEXT, sendData);
+
+                Log.d("SEND_INTENT_IN_RAW_LOG:", "size:" + sendData.getBytes(Charset.forName("UTF-8")).length);
+                //sendIntent.putExtra("extra", new byte[1024 *256]);
+
+                if (sendData.getBytes(Charset.forName("UTF-8")).length > 200000){
+                    Toast ToastCourt = Toast.makeText(mContext, R.string.toast_raw_logs_share_limit, Toast.LENGTH_LONG);
+                    ToastCourt.show();
+                    return;
+                }
+               sendIntent.putExtra(Intent.EXTRA_TEXT, sendData);
                 sendIntent.setType("text/plain");
                 mContext.startActivity(sendIntent);
                 /*Toast ToastCourt = Toast.makeText(getContext(), DataOfListView.get(classPosition).getPseudoUser(), Toast.LENGTH_SHORT);

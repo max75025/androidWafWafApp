@@ -14,6 +14,8 @@ import com.android.volley.toolbox.Volley;
 import com.app2waf.R;
 import com.app2waf.RawLogsActivity;
 
+import java.util.Arrays;
+
 
 public class AttackRawLogsManager {
 
@@ -26,8 +28,25 @@ public class AttackRawLogsManager {
 
 
     public void run(final Context context, String apiKey, String ip, String startTime, String endTime) {
-        if (startTime == null || endTime==null){
+
+        Intent intent = new Intent(context, RawLogsActivity.class);
+        //intent.putExtra("RawLogsJson", response);
+
+        intent.putExtra("apiKey", apiKey);
+        intent.putExtra("ip", ip);
+        intent.putExtra("startTime", startTime);
+        intent.putExtra("endTime", endTime);
+
+        //intent.putExtra("extra", new byte[400 * 1024]);
+        //Toast.makeText(context, response, Toast.LENGTH_LONG).show();
+
+        context.startActivity(intent);
+
+
+
+       /* if (startTime == null || endTime==null){
             Toast.makeText(context, context.getString(R.string.toast_oops), Toast.LENGTH_LONG).show();
+            Log.d(TAG, "starttime and endTime == null" );
             return;
         }
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -43,11 +62,22 @@ public class AttackRawLogsManager {
                             return;
                         }
 
-                        Intent intent = new Intent(context, RawLogsActivity.class);
-                        intent.putExtra("RawLogsJson",response);
-                        //Toast.makeText(context, response, Toast.LENGTH_LONG).show();
-                        Log.d(TAG, "onResponse: " +response);
-                        context.startActivity(intent);
+                        int responseSize = response.getBytes().length;
+                        Log.d(TAG, "size of response:" + responseSize + "bytes");
+                        // проверка на огрничение в 256кб
+                        int maxLen = 200000;
+                        if (responseSize>maxLen){
+
+                            Toast.makeText(context, context.getString(R.string.toast_raw_logs_limit), Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                            Intent intent = new Intent(context, RawLogsActivity.class);
+                            intent.putExtra("RawLogsJson", response);
+                            //intent.putExtra("extra", new byte[400 * 1024]);
+                            //Toast.makeText(context, response, Toast.LENGTH_LONG).show();
+
+                            context.startActivity(intent);
+
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -59,9 +89,12 @@ public class AttackRawLogsManager {
         });
 
         // Add the request to the RequestQueue.
-        queue.add(stringRequest);
+        queue.add(stringRequest);*/
 
     }
+
+
+
 
 
 

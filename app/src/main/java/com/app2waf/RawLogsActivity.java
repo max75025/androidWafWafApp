@@ -1,12 +1,23 @@
 package com.app2waf;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.app2waf.Adapter.RawLogsAdapter;
 import com.app2waf.Model.AttackRawLogs;
 
@@ -31,11 +42,61 @@ public class RawLogsActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         initRecyclerView();
         //loadRawLogs();
-        String json = getIntent().getStringExtra("RawLogsJson");
-        Log.d(TAG, "onCreate: json" +json);
-        List<AttackRawLogs> logs = jsonConvert(json);
-        rawLogsAdapter.setItems(logs);
+        //String json = getIntent().getStringExtra("RawLogsJson");
+        //Log.d(TAG, "onCreate: json" +json);
 
+        String apiKey = getIntent().getStringExtra("apiKey");
+        String ip = getIntent().getStringExtra("ip");
+        String startTime = getIntent().getStringExtra("startTime");
+        String endTime = getIntent().getStringExtra("endTime");
+
+        getAndSetRawLogs(this, apiKey, ip, startTime,endTime);
+
+       // List<AttackRawLogs> logs = jsonConvert(json);
+       // rawLogsAdapter.setItems(logs);
+
+
+    }
+
+
+    public void getAndSetRawLogs(final Context context , String apiKey, String ip, String startTime, String endTime){
+        if (startTime == null || endTime==null){
+            Toast.makeText(context, context.getString(R.string.toast_oops), Toast.LENGTH_LONG).show();
+            Log.d(TAG, "starttime and endTime == null" );
+            return;
+        }
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = "https://2waf.com/eventsjson/" + apiKey + "/" + ip + "/" + startTime + "/" + endTime;
+        Log.d(TAG, "run: url - " + url);
+        String resultResponse;
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //resultResponse =  response;
+
+                        List<AttackRawLogs> logs = jsonConvert(response);
+                        rawLogsAdapter.setItems(logs);
+
+
+                        ProgressBar progressBar =  findViewById(R.id.pb_raw_logs);
+                        RecyclerView rv =  findViewById(R.id.logs_recycler_view);
+                        progressBar.setVisibility(View.GONE);
+                        rv.setVisibility(View.VISIBLE);
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Toast.makeText(context, context.getString(R.string.toast_error_ethernet_conn), Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
 
     }
 

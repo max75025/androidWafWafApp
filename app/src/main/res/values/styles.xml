@@ -17,6 +17,14 @@
         <item name="android:itemTextAppearance">@style/CardPopupMenuTextStyle</item>
     </style>
 
+    <style name="MainActionBar.Popup" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:colorBackground">@color/colorBackgroundGrey</item>
+        <item name="android:background">@color/colorBackgroundGrey</item>
+
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:color">@color/colorWhite</item>
+    </style>
+
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>

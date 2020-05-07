@@ -27,9 +27,10 @@
         app:itemTextColor="@color/colorWhite"
         app:itemIconTint="@color/colorGrey"
 
+
         >
 
-        <Button
+        <!--<Button
             android:id="@+id/site_button"
             android:text="@string/site"
             android:layout_width="match_parent"
@@ -38,7 +39,8 @@
             android:theme="@style/Widget.AppCompat.Button"
             android:textAppearance="@style/MenuTextStyle"
             android:background="@color/colorMainGrey"
-            android:textColor="@color/colorWhite"/>
+            android:textColor="@color/colorWhite"
+            />-->
     </com.google.android.material.navigation.NavigationView>
 
 
